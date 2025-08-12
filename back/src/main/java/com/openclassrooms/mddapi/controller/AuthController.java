@@ -27,16 +27,17 @@ import com.openclassrooms.mddapi.repository.UserRepository;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-    private final AuthenticationManager authenticationManager;
+   // private final AuthenticationManager authenticationManager;
    
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
-    AuthController(AuthenticationManager authenticationManager,
+    AuthController(
+    		//AuthenticationManager authenticationManager,
             PasswordEncoder passwordEncoder,
 
             UserRepository userRepository) {
-        this.authenticationManager = authenticationManager;
+       // this.authenticationManager = authenticationManager;
 
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
