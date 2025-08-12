@@ -1,4 +1,3 @@
-<!-- register.component.html -->
 <div class="register-container">
    <button mat-icon-button class="back-arrow" [routerLink]="'/'" routerLinkActive="active" aria-current="page"> 
       <mat-icon>arrow_back</mat-icon>
@@ -8,17 +7,17 @@
 
   <form>
     <mat-label>Nom d’utilisateur</mat-label>
-    <mat-form-field appearance="outline" class="full-width">
+    <mat-form-field appearance="outline" class="full-width register-field">
       <input matInput type="text" name="username">
     </mat-form-field>
 
     <mat-label>Adresse e-mail</mat-label>
-    <mat-form-field appearance="outline" class="full-width">
+    <mat-form-field appearance="outline" class="full-width register-field">
       <input matInput type="email" name="email">
     </mat-form-field>
 
     <mat-label>Mot de passe</mat-label>
-    <mat-form-field appearance="outline" class="full-width">
+    <mat-form-field appearance="outline" class="full-width register-field">
       <input matInput type="password" name="password">
     </mat-form-field>
 

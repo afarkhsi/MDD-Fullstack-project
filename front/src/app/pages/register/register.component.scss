@@ -1,4 +1,3 @@
-/* register.component.scss */
 .register-container {
   display: flex;
   flex-direction: column;
@@ -17,9 +16,14 @@
     .full-width {
       width: 100%;
       margin-bottom: 10px;
+      input{
+        cursor: pointer;
+      }
     }
   }
 }
+
+
 
 .back-arrow {
   position: absolute;
