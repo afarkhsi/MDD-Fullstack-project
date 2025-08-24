@@ -5,8 +5,8 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.7.3</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<version>2.7.18</version>
+		<relativePath/>
 	</parent>
 	<groupId>com.openclassrooms</groupId>
 	<artifactId>mdd-api</artifactId>
@@ -14,8 +14,18 @@
 	<name>mdd-api</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>17</java.version>
+		<lombok.version>1.18.26</lombok.version>
 	</properties>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>mysql</groupId>
+				<artifactId>mysql-connector-java</artifactId>
+				<version>8.0.30</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -50,10 +60,11 @@
 		</dependency>
 		
 		 <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
-        </dependency>
+		  <groupId>org.projectlombok</groupId>
+		  <artifactId>lombok</artifactId>
+		  <version>${lombok.version}</version>
+		  <scope>provided</scope>
+		</dependency>
 		
 		<dependency>
 		    <groupId>org.springframework.boot</groupId>
@@ -72,7 +83,32 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+	                <mainClass>com.openclassrooms.mddapi.MddApiApplication</mainClass>
+	            </configuration>
 			</plugin>
+			<plugin>
+		      <artifactId>maven-surefire-plugin</artifactId>
+		      <version>2.22.2</version>
+		      <configuration>
+		        <skipTests>true</skipTests>
+		      </configuration>
+		    </plugin>
+			<plugin>
+		      <artifactId>maven-compiler-plugin</artifactId>
+		      <version>3.11.0</version>
+		      <configuration>
+		        <source>${java.version}</source>
+		        <target>${java.version}</target>
+		        <annotationProcessorPaths>
+		          <path>
+		            <groupId>org.projectlombok</groupId>
+		            <artifactId>lombok</artifactId>
+		            <version>${lombok.version}</version>
+		          </path>
+		        </annotationProcessorPaths>
+		      </configuration>
+		    </plugin>
 		</plugins>
 	</build>
 

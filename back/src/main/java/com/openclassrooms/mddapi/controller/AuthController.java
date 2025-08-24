@@ -1,5 +1,7 @@
 package com.openclassrooms.mddapi.controller;
 
+import java.util.Optional;
+
 import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
@@ -7,7 +9,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,75 +17,107 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.openclassrooms.mddapi.model.User;
-//import com.openclassrooms.mddapi.payload.request.LoginRequest;
+import com.openclassrooms.mddapi.payload.request.SignInRequest;
 import com.openclassrooms.mddapi.payload.request.SignupRequest;
-//import com.openclassrooms.mddapi.payload.response.JwtResponse;
+import com.openclassrooms.mddapi.payload.response.JwtResponse;
 import com.openclassrooms.mddapi.payload.response.MessageResponse;
-import com.openclassrooms.mddapi.repository.UserRepository;
-//import com.openclassrooms.mddapi.security.jwt.JwtUtils;
-//import com.openclassrooms.mddapi.security.services.UserDetailsImpl;
+import com.openclassrooms.mddapi.service.UserService;
+import com.openclassrooms.mddapi.security.jwt.JwtUtils;
+import com.openclassrooms.mddapi.security.service.UserDetailsImpl;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-   // private final AuthenticationManager authenticationManager;
-   
-    private final PasswordEncoder passwordEncoder;
-    private final UserRepository userRepository;
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtils jwtUtils;
+	private final UserService userService;
 
-    AuthController(
-    		//AuthenticationManager authenticationManager,
-            PasswordEncoder passwordEncoder,
+	public AuthController(AuthenticationManager authenticationManager, UserService userService, JwtUtils jwtUtils) {
+		this.authenticationManager = authenticationManager;
+		this.userService = userService;
+		this.jwtUtils = jwtUtils;
+	}
 
-            UserRepository userRepository) {
-       // this.authenticationManager = authenticationManager;
-
-        this.passwordEncoder = passwordEncoder;
-        this.userRepository = userRepository;
-    }
-
-    /*
-    @PostMapping("/login")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
-
+	@PostMapping("/login")
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody SignInRequest loginRequest) {
+        // 1. Authentification
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
-
+            new UsernamePasswordAuthenticationToken(
+                loginRequest.getEmailOrUsername(),
+                loginRequest.getPassword()
+            )
+        );
         SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        // 2. Génération du JWT
         String jwt = jwtUtils.generateJwtToken(authentication);
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
-        boolean isAdmin = false;
-        User user = this.userRepository.findByEmail(userDetails.getUsername()).orElse(null);
-        if (user != null) {
-            isAdmin = user.isAdmin();
-        }
-
-        return ResponseEntity.ok(new JwtResponse(jwt,
-                userDetails.getId(),
-                userDetails.getUsername(),
-                userDetails.getFirstName(),
-                userDetails.getLastName(),
-                isAdmin));
+        // 3. Réponse
+        JwtResponse jwtResponse = new JwtResponse(
+            jwt,
+            userDetails.getId(),
+            userDetails.getUsername(),
+            userDetails.getEmail(),
+            userDetails.getAuthorities()
+        );
+        return ResponseEntity.ok(jwtResponse);
     }
-*/
-    @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: Email is already taken!"));
-        }
+	  
+	@PostMapping("/register")
+	public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
 
-        // Create new user's account
-        User user = new User(
-    		 	signUpRequest.getUsername(),
-    		 	signUpRequest.getEmail(),
-                passwordEncoder.encode(signUpRequest.getPassword()));
+	    if (userService.isUsernameExist(signUpRequest.getUsername())) {
+	        return ResponseEntity
+	                .badRequest()
+	                .body(new MessageResponse("Error: Username is already taken!"));
+	    }
 
-        userRepository.save(user);
+	    if (userService.isEmailExist(signUpRequest.getEmail())) {
+	        return ResponseEntity
+	                .badRequest()
+	                .body(new MessageResponse("Error: Email is already taken!"));
+	    }
 
-        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
-    }
+	    // 1. Création et persistance
+	    userService.signUpUser(signUpRequest);
+
+	    // 2. Authentification automatique
+	    Authentication authentication = authenticationManager.authenticate(
+	        new UsernamePasswordAuthenticationToken(
+	            signUpRequest.getUsername(),
+	            signUpRequest.getPassword()
+	        )
+	    );
+	    SecurityContextHolder.getContext().setAuthentication(authentication);
+
+	    // 3. Génération du JWT
+	    String jwt = jwtUtils.generateJwtToken(authentication);
+	    UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+
+	    // 4. Construction de la réponse
+	    JwtResponse jwtResponse = new JwtResponse(
+	        jwt,
+	        userDetails.getId(),
+	        userDetails.getUsername(),
+	        userDetails.getEmail(),
+	        userDetails.getAuthorities()
+	    );
+
+	    return ResponseEntity.ok(jwtResponse);
+	}
+	
+	 private User getUserFromIdentifier(String emailOrUsername) {
+	        Optional<User> userFromEmail = userService.getUserByEmail(emailOrUsername);
+	        Optional<User> userFromUsername = userService.getUserByUsername(emailOrUsername);
+
+	        Boolean identifierIsInvalid = userFromEmail.isEmpty() && userFromUsername.isEmpty();
+	        if (identifierIsInvalid) {
+	        	 throw new UsernameNotFoundException(
+	                     "User Not Found with username or email: " + emailOrUsername);
+	        }
+
+	        return userFromEmail.isPresent() ? userFromEmail.get() : userFromUsername.get();
+	  }
 }
