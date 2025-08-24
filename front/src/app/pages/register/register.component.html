@@ -1,28 +1,40 @@
-<div class="register-container">
-   <button mat-icon-button class="back-arrow" [routerLink]="'/'" routerLinkActive="active" aria-current="page"> 
-      <mat-icon>arrow_back</mat-icon>
-    </button>
+<div class="auth-container">
+  <button mat-icon-button routerLink="/"  class="back-arrow">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
 
   <h2>Inscription</h2>
 
-  <form>
-    <mat-label>Nom d’utilisateur</mat-label>
-    <mat-form-field appearance="outline" class="full-width register-field">
-      <input matInput type="text" name="username">
+  <form class="auth-form"[formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="outline" class="full-width auth-field">
+      <mat-label>Nom d’utilisateur</mat-label>
+      <input matInput type="name" formControlName="username" />
+      <mat-error *ngIf="registerForm.get('username')?.hasError('required')">
+        Le nom d’utilisateur est requis
+      </mat-error>
     </mat-form-field>
 
-    <mat-label>Adresse e-mail</mat-label>
-    <mat-form-field appearance="outline" class="full-width register-field">
-      <input matInput type="email" name="email">
+    <mat-form-field appearance="outline" class="full-width auth-field">
+      <mat-label>Adresse e-mail</mat-label>
+      <input matInput type="email" formControlName="email" />
+      <mat-error *ngIf="registerForm.get('email')?.hasError('email')">
+        Format d’email invalide
+      </mat-error>
     </mat-form-field>
 
-    <mat-label>Mot de passe</mat-label>
-    <mat-form-field appearance="outline" class="full-width register-field">
-      <input matInput type="password" name="password">
+    <mat-form-field appearance="outline" class="full-width auth-field">
+      <mat-label>Mot de passe</mat-label>
+      <input matInput type="password" formControlName="password" />
+      <mat-error *ngIf="registerForm.get('password')?.hasError('minlength')">
+        Au moins 6 caractères
+      </mat-error>
     </mat-form-field>
 
-    <button mat-raised-button type="submit" color="primary" class="register-button">
-      S’inscrire
+    <button mat-raised-button type="submit" color="primary" class="auth-button"
+    [disabled]="registerForm.invalid || isLoading">
+      {{ isLoading ? 'Inscription...' : 'S’inscrire' }}
     </button>
+
+    <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
   </form>
 </div>

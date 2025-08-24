@@ -19,6 +19,10 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialogModule } from '@angular/material/dialog';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {HttpClientModule, HTTP_INTERCEPTORS  } from '@angular/common/http';
+import { AuthInterceptor } from './core/interceptors/auth.interceptor';
+import { LoginComponent } from './pages/login/login.component';
+import { ArticlesComponent } from './pages/articles/articles.component';
 
 const materialModules = [
   MatButtonModule,
@@ -42,14 +46,22 @@ const materialModules = [
     AppComponent,
     HomeComponent,
     RegisterComponent,
+    LoginComponent,
+    ArticlesComponent,
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
+    ReactiveFormsModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     ...materialModules
   ],
-  providers: [],
+  providers: [
+   { provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true}
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
