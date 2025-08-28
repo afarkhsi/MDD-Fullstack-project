@@ -22,7 +22,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {HttpClientModule, HTTP_INTERCEPTORS  } from '@angular/common/http';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { LoginComponent } from './pages/login/login.component';
+import { HeaderComponent } from './components/header/header.component';
+import { TopicCardComponent } from './components/topic-card/topic-card.component';
+import { TopicsComponent } from './pages/topics/topics.component';
 import { ArticlesComponent } from './pages/articles/articles.component';
+import { ArticleCardComponent } from './components/article-card/article-card.component';
+import { CreateArticleComponent } from './pages/create-article/create-article.component';
 
 const materialModules = [
   MatButtonModule,
@@ -47,7 +52,12 @@ const materialModules = [
     HomeComponent,
     RegisterComponent,
     LoginComponent,
+    TopicsComponent,
+    TopicCardComponent,
+    HeaderComponent,
     ArticlesComponent,
+    ArticleCardComponent,
+    CreateArticleComponent,
   ],
   imports: [
     BrowserModule,

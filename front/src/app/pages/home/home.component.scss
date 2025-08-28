@@ -5,3 +5,25 @@
   align-items: center;
   flex-direction: column;
 }
+
+.home_links-container {
+  display: flex;
+  gap: 16px;
+  margin-top: 24px;
+  &_button {
+    padding: 12px 24px;
+    background-color: #fdfdfd;
+    color: rgb(0, 0, 0);
+    border: 2px solid rgb(0, 0, 0);
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: #7763C5;
+      color: #fdfdfd;
+      border: #7763C5 solid 2px;
+    }
+  }
+}

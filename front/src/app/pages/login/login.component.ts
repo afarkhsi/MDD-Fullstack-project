@@ -48,9 +48,9 @@ export class LoginComponent implements OnInit {
         // on suppose que la réponse contient { token: string, ... }
         localStorage.setItem('jwtToken', res.token);
         console.log('Token stocké :', res.token);
-        console.log('Login réussi redirection vers /home', payload);
-        // redirige vers la page home
-        this.router.navigate(['/home']);
+        console.log('Login réussi redirection vers /articles', payload);
+        // redirige vers la page articles
+        this.router.navigate(['/articles']);
       },
       error: (err) => {
         // affiche un message d’erreur

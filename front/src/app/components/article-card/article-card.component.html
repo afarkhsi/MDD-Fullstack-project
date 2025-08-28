@@ -1,0 +1,12 @@
+<div class="card">
+  <h3 class="title">{{ article.title }}</h3>
+
+  <div class="meta">
+    <span *ngIf="article.createdAt">{{ article.createdAt }}</span>
+    <span *ngIf="article.authorUsername">{{ article.authorUsername.name }}</span>
+  </div>
+
+  <p class="content">
+    {{ article.description }}
+  </p>
+</div>
