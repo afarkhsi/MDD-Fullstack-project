@@ -4,8 +4,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import com.openclassrooms.mddapi.security.jwt.AuthEntryPointJwt;
+import com.openclassrooms.mddapi.security.jwt.AuthTokenFilter;
 import com.openclassrooms.mddapi.security.service.UserDetailsServiceImpl;
 
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -28,13 +31,14 @@ public class WebSecurityConfig {
  // @Autowired
   //private UserDetailsServiceImpl userDetailsService;
 
- //@Autowired
-  //private AuthEntryPointJwt unauthorizedHandler;
+  @Autowired
+  private AuthEntryPointJwt unauthorizedHandler;
 
- // @Bean
-  // public AuthTokenFilter authenticationJwtTokenFilter() {
-  //  return new AuthTokenFilter();
-  //}
+  @Bean
+  public AuthTokenFilter authTokenFilter() {
+      // On injecte jwtUtils dans le constructeur si besoin
+      return new AuthTokenFilter();
+  }
 
   @Bean
   public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
@@ -52,7 +56,7 @@ public class WebSecurityConfig {
       .cors().and()
       .csrf().disable()
       .exceptionHandling().and()
-      //.exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+      .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
       .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
       .authorizeHttpRequests(auth -> auth
     	.requestMatchers(new AntPathRequestMatcher("/api/auth/**")).permitAll()
@@ -61,7 +65,7 @@ public class WebSecurityConfig {
       );
 
     // Ajout du filtre JWT avant UsernamePasswordAuthenticationFilter
-   // http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+    http.addFilterBefore(authTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
     return http.build();
   }

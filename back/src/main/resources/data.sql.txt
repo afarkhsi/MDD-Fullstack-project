@@ -1,0 +1,70 @@
+INSERT INTO topics (name, description) VALUES
+('Programmation Orientée Objet',
+ 'La programmation orientée objet (POO) est un paradigme basé sur l’utilisation d’objets qui encapsulent données et comportements.
+ Elle facilite la réutilisation du code grâce à l’héritage et favorise une organisation claire des projets.
+ Les quatre concepts fondamentaux de la POO sont : l’encapsulation, l’héritage, le polymorphisme et l’abstraction.
+ Ce modèle est utilisé dans des langages comme Java, C++, Python et C#.
+ Grâce à la POO, il est plus facile de concevoir des applications modulaires, robustes et maintenables.'),
+
+('Développement Web',
+ 'Le développement web englobe la création de sites et d’applications accessibles depuis un navigateur internet.
+ Il se divise en deux grandes parties : le front-end (interface utilisateur) et le back-end (traitement des données et logique).
+ Les langages classiques incluent HTML, CSS et JavaScript pour le front, et Java, PHP, Node.js ou Python pour le back.
+ Les frameworks modernes comme Angular, React et Spring Boot accélèrent la productivité et la qualité du code.
+ La sécurité, l’accessibilité et les performances sont des enjeux essentiels du développement web.'),
+
+('Bases de Données',
+ 'Les bases de données servent à stocker, organiser et manipuler de grandes quantités d’informations.
+ On distingue les bases relationnelles (SQL) et non relationnelles (NoSQL), adaptées à des usages différents.
+ Le langage SQL est incontournable pour interagir avec des données structurées via des requêtes.
+ La conception de bases inclut la modélisation, la définition de schémas et la gestion des relations entre tables.
+ Aujourd’hui, MySQL, PostgreSQL et MongoDB sont parmi les systèmes les plus populaires.'),
+
+('Intelligence Artificielle',
+ 'L’intelligence artificielle (IA) consiste à créer des systèmes capables de simuler certaines capacités humaines.
+ Elle repose sur des algorithmes de machine learning et de deep learning exploitant de vastes ensembles de données.
+ Les applications incluent la reconnaissance d’images, la traduction automatique et les assistants virtuels.
+ L’IA se divise en IA faible (spécialisée) et IA forte (générale, encore hypothétique).
+ Elle pose des défis techniques mais aussi éthiques, liés à la vie privée et à l’emploi.'),
+
+('Cybersécurité',
+ 'La cybersécurité vise à protéger les systèmes informatiques contre les attaques et les intrusions.
+ Elle englobe la sécurité des réseaux, des applications, des serveurs et des données personnelles.
+ Les menaces les plus répandues sont les virus, ransomwares, hameçonnages et dénis de service.
+ Les bonnes pratiques incluent l’utilisation de mots de passe robustes, le chiffrement et les sauvegardes.
+ Dans un monde numérique interconnecté, la cybersécurité est devenue une priorité stratégique.'),
+
+('Algorithmes et Structures de Données',
+ 'Les algorithmes définissent des suites d’instructions permettant de résoudre efficacement un problème donné.
+ Ils s’appuient souvent sur des structures de données telles que listes, piles, files, arbres et graphes.
+ La maîtrise des algorithmes est essentielle pour optimiser la performance d’un logiciel.
+ Des exemples classiques incluent les tris, la recherche binaire et les parcours de graphes.
+ Ce domaine constitue le socle de la programmation avancée et des entretiens techniques.'),
+
+('Développement Mobile',
+ 'Le développement mobile concerne la création d’applications pour smartphones et tablettes.
+ Les principales plateformes sont Android (Java/Kotlin) et iOS (Swift/Objective-C).
+ Les frameworks hybrides comme Flutter et React Native permettent un code unique pour plusieurs systèmes.
+ Les applications mobiles doivent être performantes, ergonomiques et adaptées aux contraintes matérielles.
+ C’est un secteur en croissance constante avec une demande massive d’applications innovantes.'),
+
+('Programmation Fonctionnelle',
+ 'La programmation fonctionnelle est un paradigme qui privilégie l’utilisation de fonctions pures et immuables.
+ Elle évite les effets de bord et facilite le raisonnement sur le comportement d’un programme.
+ Des langages comme Haskell, Scala et Elixir en sont emblématiques, mais JavaScript et Python l’intègrent aussi.
+ Les concepts importants incluent les fonctions d’ordre supérieur, la récursivité et les expressions lambda.
+ Ce style favorise la modularité, la testabilité et la parallélisation des programmes.'),
+
+('DevOps et Intégration Continue',
+ 'Le mouvement DevOps vise à rapprocher les équipes de développement et d’exploitation informatique.
+ L’intégration continue (CI) et le déploiement continu (CD) en sont des pratiques fondamentales.
+ Elles reposent sur des outils comme Jenkins, GitLab CI, Docker et Kubernetes.
+ L’objectif est d’automatiser les tests, la livraison et la mise en production des applications.
+ DevOps améliore la rapidité, la fiabilité et la qualité du cycle de développement logiciel.'),
+
+('Cloud Computing',
+ 'Le cloud computing permet d’accéder à des ressources informatiques à la demande via internet.
+ Il offre des services d’infrastructure (IaaS), de plateforme (PaaS) et de logiciels (SaaS).
+ Les principaux fournisseurs sont AWS, Microsoft Azure et Google Cloud Platform.
+ Le cloud favorise l’évolutivité, la flexibilité et la réduction des coûts d’infrastructure.
+ Toutefois, il soulève aussi des enjeux liés à la sécurité, à la dépendance et à la souveraineté des données.');
