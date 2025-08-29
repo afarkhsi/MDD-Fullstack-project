@@ -6,8 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import com.openclassrooms.mddapi.model.Topic;
+import com.openclassrooms.mddapi.payload.response.TopicResponse;
 import com.openclassrooms.mddapi.service.TopicService;
+import java.security.Principal;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -22,7 +23,8 @@ public class TopicController {
 
     @GetMapping
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<List<Topic>> getAllTopics() {
-        return ResponseEntity.ok(topicService.getAllTopics());
+    public ResponseEntity<List<TopicResponse>> getAllTopics(Principal principal) {
+    	String username = principal.getName();
+        return ResponseEntity.ok(topicService.getAllTopics(username));
     }
 }

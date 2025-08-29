@@ -33,7 +33,7 @@ public class ArticleController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> createArticle(@Valid @RequestBody ArticleRequest request, Principal principal) {
         User author = userService.getUserByUsername(principal.getName())
                 .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
