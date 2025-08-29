@@ -7,17 +7,20 @@ import { LoginComponent } from './pages/login/login.component';
 import { TopicsComponent } from './pages/topics/topics.component';
 import { ArticlesComponent } from './pages/articles/articles.component';
 import { CreateArticleComponent } from './pages/create-article/create-article.component';
+import { AuthGuard } from './core/guards/auth.guards';
+import { GuestGuard } from './core/guards/guest.guards';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
 
 
 const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent, title: 'Monde de Dév' },
-  { path: 'register', component: RegisterComponent, title: 'Register' },
-  { path: 'login', component: LoginComponent, title: 'Login' },
-  { path: 'articles', component: ArticlesComponent, title: 'Articles' },
-  { path: 'topics', component: TopicsComponent, title: 'Topics' },
-  { path: 'articles/create', component: CreateArticleComponent, title: 'Créer un article' },
-  { path: '**', redirectTo: 'home' }
+  { path: '', redirectTo: 'home', pathMatch: 'full'},
+  { path: 'home', component: HomeComponent, title: 'Monde de Dév', canActivate: [GuestGuard] },
+  { path: 'register', component: RegisterComponent, title: 'Register', canActivate: [GuestGuard] },
+  { path: 'login', component: LoginComponent, title: 'Login', canActivate: [GuestGuard] },
+  { path: 'articles', component: ArticlesComponent, title: 'Articles', canActivate: [AuthGuard] },
+  { path: 'topics', component: TopicsComponent, title: 'Topics', canActivate: [AuthGuard] },
+  { path: 'articles/create', component: CreateArticleComponent, title: 'Créer un article', canActivate: [AuthGuard] },
+  { path: '**', component: NotFoundComponent }
 ];
 
 @NgModule({

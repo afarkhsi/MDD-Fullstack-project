@@ -1,7 +1,10 @@
-<div class="actions">
-  <button class="btn-create" routerLink="/articles/create">Créer un article</button>
-</div>
 
-<div class="articles-grid">
-  <app-article-card *ngFor="let article of articles" [article]="article"></app-article-card>
-</div>
+<section class="articles-section">
+  <div class="actions">
+    <button class="btn-create" routerLink="/articles/create">Créer un article</button>
+  </div>
+
+  <div class="articles-grid">
+    <app-article-card *ngFor="let article of articles" [article]="article"></app-article-card>
+  </div>
+</section>

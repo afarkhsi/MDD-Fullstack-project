@@ -29,33 +29,20 @@ export class LoginComponent implements OnInit {
   }
 
   onLogin(): void {
-    // stop si invalide
-    if (this.loginForm.invalid) {
-      return;
-    }
+    if (this.loginForm.invalid) return;
 
     this.isLoading = true;
     this.errorMessage = null;
 
-    const payload: LoginRequest = {
-      emailOrUsername: this.loginForm.value.emailOrUsername,
-      password: this.loginForm.value.password,
-    };
+    const payload: LoginRequest = this.loginForm.value;
 
     this.auth.login(payload).subscribe({
-      next: (res) => {
-        // on stocke le JWT dans localStorage
-        // on suppose que la réponse contient { token: string, ... }
-        localStorage.setItem('jwtToken', res.token);
-        console.log('Token stocké :', res.token);
-        console.log('Login réussi redirection vers /articles', payload);
-        // redirige vers la page articles
+      next: () => {
+        console.log('Login réussi, redirection vers /articles');
         this.router.navigate(['/articles']);
       },
       error: (err) => {
-        // affiche un message d’erreur
-        this.errorMessage =
-          err.error?.message || 'Erreur lors de la connexion.';
+        this.errorMessage = err.error?.message || 'Erreur lors de la connexion.';
         this.isLoading = false;
       },
     });

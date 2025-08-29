@@ -1,1 +1,15 @@
-<p>header works!</p>
+<header class="app-header">
+  <div class="header-left">
+    <img src="assets/logo_p6.png" alt="Logo" class="logo" />
+  </div>
+
+  <nav *ngIf="isAuthenticated" class="header-nav">
+    <a routerLink="/articles" class="header-nav_item" routerLinkActive="active-link">Articles</a>
+    <a routerLink="/topics" class="header-nav_item" routerLinkActive="active-link">Thèmes</a>
+    <a (click)="logout()" class="disconnect">Se déconnecter</a>
+  </nav>
+
+  <div *ngIf="isAuthenticated" class="header-right">
+    <img src="assets/avatar.png" alt="Profil" class="avatar" routerLink="/profile" />
+  </div>
+</header>

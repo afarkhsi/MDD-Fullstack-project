@@ -1,0 +1,32 @@
+.not-found {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  height: 100vh;
+  text-align: center;
+  background-color: #f9f9f9;
+  color: #7763C5;
+
+  h1 {
+    font-size: 8rem;
+  }
+
+  p {
+    font-size: 1.5rem;
+    margin: 0 0 1.5rem 0; // espace sous le message
+  }
+
+  a {
+    font-size: 1rem;
+    color: #000000;
+    text-decoration: underline;
+    font-weight: bold;
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: #7763C5;
+    }
+  }
+}

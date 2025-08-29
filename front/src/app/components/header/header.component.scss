@@ -1,0 +1,51 @@
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #f8f8ff;
+  border-bottom: 1px solid #ddd;
+}
+
+.logo {
+  height: 80px;
+}
+
+.header-nav {
+  display: flex;
+  gap: 1.5rem;
+
+  &_item {
+    text-decoration: none;
+    color: #333;
+    font-weight: 600;
+
+    &:hover {
+      color: #7763C5;
+    }
+    &.active-link {
+      color: #7763C5;
+      border-bottom: 2px solid #7763C5;
+    }
+  }
+}
+
+.header-right .avatar {
+  height: 36px;
+  width: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.header-right .avatar:hover {
+  opacity: 0.8;
+}
+
+.disconnect {
+  cursor: pointer;
+  color: #A40F0F;
+  font-weight: 600;
+  font-size: 14px;
+   &:hover {
+      color: #6a4cff;
+    }
+}
