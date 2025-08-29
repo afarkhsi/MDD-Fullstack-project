@@ -39,6 +39,12 @@ public class ArticleService {
                 .map(this::toResponse)
                 .collect(Collectors.toList());
     }
+    
+    public ArticleResponse getById(Long id) {
+        Article article = articleRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Article non trouvé avec l'id : " + id));
+        return toResponse(article);
+    }
 
     private ArticleResponse toResponse(Article article) {
         ArticleResponse dto = new ArticleResponse();

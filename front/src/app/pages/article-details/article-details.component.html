@@ -1,0 +1,25 @@
+<div class="article-detail">
+  <!-- Flèche retour + titre -->
+  <div class="header-row">
+    <button mat-icon-button routerLink="/articles" class="back-arrow">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h2 class="article-title">{{ article?.title }}</h2>
+  </div>
+
+  <!-- Métadonnées -->
+  <div class="meta-row">
+    <span>{{ article?.createdAt | date:'dd MMM yyyy' }}</span>
+    <span>• {{ article?.authorUsername?.name }}</span>
+    <span>• {{ article?.topic?.name }}</span>
+  </div>
+
+  <!-- Description -->
+  <p class="article-description">{{ article?.description }}</p>
+
+  <!-- Séparateur -->
+  <hr class="separator" />
+
+  <!-- Composant commentaire -->
+     <app-commentary [articleId]="article.id"></app-commentary>
+</div>

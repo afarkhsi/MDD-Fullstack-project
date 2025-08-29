@@ -7,16 +7,16 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class SubscriptionService {
+export class SubscribeService {
   private pathService = `${environment.baseUrl}/subscription`;
 
   constructor(private httpClient: HttpClient) {}
 
-  subscribe(topicId: number): Observable<Subscribe> {
+  subscribeTopic(topicId: number): Observable<Subscribe> {
     return this.httpClient.post<Subscribe>(`${this.pathService}/${topicId}/subscribe`, {});
   }
 
-  unsubscribe(topicId: number): Observable<Subscribe> {
+  unsubscribeTopic(topicId: number): Observable<Subscribe> {
     return this.httpClient.post<Subscribe>(`${this.pathService}/${topicId}/unsubscribe`, {});
   }
 }

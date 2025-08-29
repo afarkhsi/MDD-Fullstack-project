@@ -32,6 +32,7 @@ public class SubscriptionService {
             userRepository.save(user);
             return Optional.of(topic);
         }
+        
 
         return Optional.empty();
     }

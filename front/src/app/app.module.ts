@@ -29,6 +29,8 @@ import { ArticlesComponent } from './pages/articles/articles.component';
 import { ArticleCardComponent } from './components/article-card/article-card.component';
 import { CreateArticleComponent } from './pages/create-article/create-article.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
+import { ArticleDetailsComponent } from './pages/article-details/article-details.component';
+import { CommentaryComponent } from './components/commentary/commentary.component';
 
 const materialModules = [
   MatButtonModule,
@@ -60,6 +62,8 @@ const materialModules = [
     ArticleCardComponent,
     CreateArticleComponent,
     NotFoundComponent,
+    ArticleDetailsComponent,
+    CommentaryComponent,
   ],
   imports: [
     BrowserModule,

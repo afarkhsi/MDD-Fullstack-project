@@ -1,0 +1,16 @@
+<div class="comment-section">
+  <h3>Commentaires</h3>
+<div class="comment" *ngFor="let comment of comments">
+    <div class="comment_header">
+        <strong>{{ comment.username }}</strong>
+        </div>
+    <div class="comment_content">
+        <p>{{ comment.comment }}</p>
+    </div>
+</div>
+
+  <textarea [(ngModel)]="newComment" placeholder="Écrivez ici votre commentaire" class="comment-input"></textarea>
+  <div class="comment-actions">
+    <button class="btn-send" (click)="sendComment()">Envoyer le commentaire</button>
+  </div>
+</div>
