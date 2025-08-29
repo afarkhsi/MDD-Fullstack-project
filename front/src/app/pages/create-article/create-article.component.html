@@ -1,16 +1,27 @@
-<h2>Créer un nouvel article</h2>
+<div class="form-header">
+  <button mat-icon-button routerLink="/articles" class="back-arrow">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  <h2 class="form-title">Créer un nouvel article</h2>
+</div>
 
-<form [formGroup]="articleForm" (ngSubmit)="onSubmit()">
-  <label for="topic">Sélectionner un thème</label>
-  <select formControlName="topic_id" id="topic">
-    <option *ngFor="let topic of topics" [value]="topic.id">{{ topic.name }}</option>
-  </select>
+<form class="article-form" [formGroup]="articleForm" (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <select class="form-control" formControlName="topicId" [class.is-placeholder]="articleForm.get('topicId')?.value == null">
+        <option [ngValue]="null" disabled>Sélectionner un thème</option>
+        <option *ngFor="let topic of topics" [ngValue]="topic.id">{{ topic.name }}</option>
+    </select>
+  </div>
 
-  <label for="title">Titre de l'article</label>
-  <input type="text" id="title" formControlName="title" />
+  <div class="form-group">
+    <input class="form-control" type="text" id="title" formControlName="title" placeholder="Titre de l'article"/>
+  </div>
 
-  <label for="description">Contenu de l'article</label>
-  <textarea id="description" formControlName="description"></textarea>
+  <div class="form-group">
+    <textarea class="form-control" id="description" formControlName="description" placeholder="Contenu de l'article"></textarea>
+  </div>
 
-  <button type="submit">Créer</button>
+  <div class="form-actions">
+    <button class="btn-primary form-actions_button" type="submit" [disabled]="articleForm.invalid">Créer</button>
+  </div>
 </form>

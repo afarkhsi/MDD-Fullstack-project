@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { mockArticles } from 'src/app/components/mockArticles';
-import { Article } from 'src/app/interfaces/article.interface';
+import { ArticleResponse } from 'src/app/interfaces/articleResponse.interface';
+import { ArticleService } from 'src/app/services/article/article.service';
 
 @Component({
   selector: 'app-articles',
@@ -8,10 +8,23 @@ import { Article } from 'src/app/interfaces/article.interface';
   styleUrls: ['./articles.component.scss']
 })
 export class ArticlesComponent implements OnInit {
-  articles: Article[] = mockArticles;
-  constructor() { }
+  articles: ArticleResponse[] = [];
+  isLoading = true;
+  errorMessage: string | null = null;
+
+  constructor(private articleService: ArticleService) {}
 
   ngOnInit(): void {
+    this.articleService.getAllArticles().subscribe({
+      next: (data) => {
+        this.articles = data;
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Erreur chargement articles', err);
+        this.errorMessage = 'Impossible de charger les articles.';
+        this.isLoading = false;
+      }
+    });
   }
-
 }

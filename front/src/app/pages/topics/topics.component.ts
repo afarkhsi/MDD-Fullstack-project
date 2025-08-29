@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Topic } from 'src/app/interfaces/topic.interface';
+import { TopicResponse } from 'src/app/interfaces/topicResponse';
 import { TopicService } from 'src/app/services/topics/topics.service';
 
 
@@ -9,14 +10,15 @@ import { TopicService } from 'src/app/services/topics/topics.service';
   styleUrls: ['./topics.component.scss']
 })
 export class TopicsComponent implements OnInit {
-  topics: Topic[] = [];
+  topics: TopicResponse[] = [];
 
   constructor(private topicsService: TopicService) {}
 
   ngOnInit(): void {
     this.topicsService.getAllTopics().subscribe({
       next: (data) => this.topics = data,
-      error: (err) => console.error('Erreur lors du chargement des topics', err)
-    });
+      error: (err) => console.error('Erreur lors du chargement des topics', err) 
+    }
+  );
   }
 }
