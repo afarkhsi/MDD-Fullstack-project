@@ -15,6 +15,10 @@ export class ArticlesComponent implements OnInit {
   constructor(private articleService: ArticleService) {}
 
   ngOnInit(): void {
+    this.loadArticles();
+  }
+
+  loadArticles(): void {
     this.articleService.getAllArticles().subscribe({
       next: (data) => {
         this.articles = data;

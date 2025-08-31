@@ -38,13 +38,14 @@ public class ArticleController {
         this.commentService = commentService;
     }
 
+    
     @PostMapping
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> createArticle(@Valid @RequestBody ArticleRequest request, Principal principal) {
         User author = userService.getUserByUsername(principal.getName())
                 .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
 
-        Topic topic = topicService.getById(request.getTopicId())
+        Topic topic = topicService.getByIdEntity(request.getTopicId())
                 .orElseThrow(() -> new RuntimeException("Thème non trouvé"));
 
         articleService.createArticle(request, author, topic);
