@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.openclassrooms.mddapi.model.Topic;
 import com.openclassrooms.mddapi.model.User;
 import com.openclassrooms.mddapi.payload.response.TopicResponse;
-import com.openclassrooms.mddapi.repository.SubscriptionRepository;
 import com.openclassrooms.mddapi.repository.TopicRepository;
 import com.openclassrooms.mddapi.repository.UserRepository;
 
@@ -17,17 +16,31 @@ import com.openclassrooms.mddapi.repository.UserRepository;
 public class TopicService {
 
     private final TopicRepository topicRepository;
-    private final SubscriptionRepository subscriptionRepository;
     private final UserRepository userRepository;
 
-    public TopicService(TopicRepository topicRepository, SubscriptionRepository subscriptionRepository, UserRepository userRepository) {
+    public TopicService(TopicRepository topicRepository, UserRepository userRepository) {
         this.topicRepository = topicRepository;
-        this.subscriptionRepository = subscriptionRepository;
         this.userRepository = userRepository;
     }
 
-    public Optional<Topic> getById(Long id) {
+    public Optional<Topic> getByIdEntity(Long id) {
         return topicRepository.findById(id);
+    }
+    
+    public TopicResponse getById(Long id, String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
+
+        Topic topic = topicRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Topic introuvable"));
+
+        TopicResponse topicResponse = new TopicResponse();
+        topicResponse.setId(topic.getId());
+        topicResponse.setName(topic.getName());
+        topicResponse.setDescription(topic.getDescription());
+        topicResponse.setIsSubscribed(user.getSubscribedTopics().contains(topic));
+
+        return topicResponse;
     }
 
     public List<TopicResponse> getAllTopics(String username) {
@@ -35,7 +48,7 @@ public class TopicService {
     		        .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
         return topicRepository.findAll().stream()
             .map(topic -> {
-            	boolean isSubscribed = subscriptionRepository.findByUserAndTopic(user, topic).isPresent();
+            	boolean isSubscribed = user.getSubscribedTopics().contains(topic);
                 TopicResponse dto = new TopicResponse();
                 dto.setId(topic.getId());
                 dto.setName(topic.getName());

@@ -1,6 +1,6 @@
 package com.openclassrooms.mddapi.service;
 
-import java.util.Optional;
+import java.util.*;
 
 import org.springframework.stereotype.Service;
 
@@ -21,34 +21,40 @@ public class SubscriptionService {
     }
 
     public Optional<Topic> subscribe(Long topicId, String username) {
-        Optional<User> userOpt = userRepository.findByUsername(username);
-        Optional<Topic> topicOpt = topicRepository.findById(topicId);
+        return getUserAndTopic(username, topicId).map(pair -> {
+            User user = pair.getKey();
+            Topic topic = pair.getValue();
 
-        if (userOpt.isPresent() && topicOpt.isPresent()) {
-            User user = userOpt.get();
-            Topic topic = topicOpt.get();
-
-            user.getSubscribedTopics().add(topic);
-            userRepository.save(user);
-            return Optional.of(topic);
-        }
-
-        return Optional.empty();
+            if (!user.getSubscribedTopics().contains(topic)) {
+                user.getSubscribedTopics().add(topic);
+                userRepository.save(user);
+            }
+            return topic;
+        });
     }
 
     public Optional<Topic> unsubscribe(Long topicId, String username) {
-        Optional<User> userOpt = userRepository.findByUsername(username);
-        Optional<Topic> topicOpt = topicRepository.findById(topicId);
+        return getUserAndTopic(username, topicId).map(pair -> {
+            User user = pair.getKey();
+            Topic topic = pair.getValue();
 
-        if (userOpt.isPresent() && topicOpt.isPresent()) {
-            User user = userOpt.get();
-            Topic topic = topicOpt.get();
+            if (user.getSubscribedTopics().contains(topic)) {
+                user.getSubscribedTopics().remove(topic);
+                userRepository.save(user);
+            }
+            return topic;
+        });
+    }
+    
+    public Set<Topic> getSubscriptions(String username) {
+        return userRepository.findByUsername(username)
+                .map(User::getSubscribedTopics)
+                .orElse(Collections.emptySet());
+    }
 
-            user.getSubscribedTopics().remove(topic);
-            userRepository.save(user);
-            return Optional.of(topic);
-        }
-
-        return Optional.empty();
+    private Optional<AbstractMap.SimpleEntry<User, Topic>> getUserAndTopic(String username, Long topicId) {
+        return userRepository.findByUsername(username)
+                .flatMap(user -> topicRepository.findById(topicId)
+                        .map(topic -> new AbstractMap.SimpleEntry<>(user, topic)));
     }
 }

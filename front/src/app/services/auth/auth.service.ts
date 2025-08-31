@@ -5,6 +5,7 @@ import { RegisterRequest } from 'src/app/interfaces/registerRequest.interface';
 import { SessionInformation } from 'src/app/interfaces/sessionInfo.interface';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
+import { User } from 'src/app/interfaces/user.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,9 @@ import { Router } from '@angular/router';
 export class AuthService {
   private authUrl = `${environment.baseUrl}/auth`;
   private authStatus = new BehaviorSubject<boolean>(this.hasToken());
+  private currentUserSubject = new BehaviorSubject<User | null>(null);
 
+  currentUser$ = this.currentUserSubject.asObservable();
   authStatus$ = this.authStatus.asObservable();
 
   constructor(
@@ -33,6 +36,7 @@ export class AuthService {
       tap(response => {
         localStorage.setItem('token', response.token);
         this.authStatus.next(true); 
+        this.loadCurrentUser(); 
       })
     );
   }
@@ -45,6 +49,20 @@ export class AuthService {
 
   getToken(): string | null {
     return localStorage.getItem('token');
+  }
+
+  loadCurrentUser(): void {
+    const token = this.getToken();
+    if (token) {
+      this.httpClient.get<User>(`${this.authUrl}/me`).subscribe({
+        next: user => this.currentUserSubject.next(user),
+        error: () => this.currentUserSubject.next(null)
+      });
+    }
+  }
+
+  getCurrentUser(): User | null {
+    return this.currentUserSubject.value;
   }
 
 }

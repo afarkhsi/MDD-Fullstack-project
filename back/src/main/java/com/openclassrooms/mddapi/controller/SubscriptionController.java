@@ -1,6 +1,7 @@
 package com.openclassrooms.mddapi.controller;
 
 import java.security.Principal;
+import java.util.*;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
@@ -32,5 +33,11 @@ public class SubscriptionController {
         return subscriptionService.unsubscribe(id, principal.getName())
             .map(topic -> ResponseEntity.ok(Map.of("message", "Désabonnement réussi", "topic", topic)))
             .orElse(ResponseEntity.badRequest().body(Map.of("message", "Erreur de désabonnement")));
+    }
+    
+    @GetMapping("/user-subscriptions")
+    public ResponseEntity<Set<Topic>> getMySubscriptions(Principal principal) {
+        Set<Topic> topics = subscriptionService.getSubscriptions(principal.getName());
+        return ResponseEntity.ok(topics);
     }
 }

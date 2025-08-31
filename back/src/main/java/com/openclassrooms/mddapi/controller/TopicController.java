@@ -21,10 +21,22 @@ public class TopicController {
         this.topicService = topicService;
     }
 
+    /**
+     * Retrieve all topics
+     */
     @GetMapping
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<TopicResponse>> getAllTopics(Principal principal) {
     	String username = principal.getName();
         return ResponseEntity.ok(topicService.getAllTopics(username));
+    }
+    
+    /**
+     * Retrieve a topic by ID
+     */
+    @GetMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<TopicResponse> getTopicById(@PathVariable Long id, Principal principal) {
+        return ResponseEntity.ok(topicService.getById(id, principal.getName()));
     }
 }

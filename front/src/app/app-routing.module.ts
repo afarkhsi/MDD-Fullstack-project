@@ -10,6 +10,7 @@ import { CreateArticleComponent } from './pages/create-article/create-article.co
 import { AuthGuard } from './core/guards/auth.guards';
 import { GuestGuard } from './core/guards/guest.guards';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
+import { ArticleDetailsComponent } from './pages/article-details/article-details.component';
 
 
 const routes: Routes = [
@@ -17,9 +18,10 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent, title: 'Monde de Dév', canActivate: [GuestGuard] },
   { path: 'register', component: RegisterComponent, title: 'Register', canActivate: [GuestGuard] },
   { path: 'login', component: LoginComponent, title: 'Login', canActivate: [GuestGuard] },
-  { path: 'articles', component: ArticlesComponent, title: 'Articles', canActivate: [AuthGuard] },
-  { path: 'topics', component: TopicsComponent, title: 'Topics', canActivate: [AuthGuard] },
   { path: 'articles/create', component: CreateArticleComponent, title: 'Créer un article', canActivate: [AuthGuard] },
+  { path: 'articles', component: ArticlesComponent, title: 'Articles', canActivate: [AuthGuard] },
+  { path: 'articles/:id', component: ArticleDetailsComponent, title: 'Article Détail', canActivate: [AuthGuard]  },
+  { path: 'topics', component: TopicsComponent, title: 'Topics', canActivate: [AuthGuard],  },
   { path: '**', component: NotFoundComponent }
 ];
 
