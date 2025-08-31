@@ -4,12 +4,19 @@
   </div>
 
   <nav *ngIf="isAuthenticated" class="header-nav">
+    <a (click)="logout()" class="disconnect">Se déconnecter</a>
     <a routerLink="/articles" class="header-nav_item" routerLinkActive="active-link">Articles</a>
     <a routerLink="/topics" class="header-nav_item" routerLinkActive="active-link">Thèmes</a>
-    <a (click)="logout()" class="disconnect">Se déconnecter</a>
   </nav>
 
   <div *ngIf="isAuthenticated" class="header-right">
-    <img src="assets/avatar.png" alt="Profil" class="avatar" routerLink="/profile" />
+    <a 
+      routerLink="/profile" 
+      routerLinkActive="active-avatar" 
+      class="avatar-container"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      <mat-icon fontSet="material-icons-outlined" class="avatar-icon">person</mat-icon>
+    </a>
   </div>
 </header>

@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import com.openclassrooms.mddapi.model.Topic;
 import com.openclassrooms.mddapi.model.User;
-import com.openclassrooms.mddapi.model.UserComment;
 import com.openclassrooms.mddapi.payload.request.ArticleRequest;
 import com.openclassrooms.mddapi.payload.request.CommentRequest;
 import com.openclassrooms.mddapi.payload.response.ArticleResponse;
@@ -78,5 +77,11 @@ public class ArticleController {
     public ResponseEntity<List<CommentResponse>> getComments(@PathVariable Long id) {
         return ResponseEntity.ok(commentService.getCommentsByArticleId(id));
     }
-
+    
+    @GetMapping("/subscribed")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<List<ArticleResponse>> getArticlesFromSubscribedTopics(Principal principal) {
+        List<ArticleResponse> articles = articleService.getArticlesFromSubscribedTopics(principal.getName());
+        return ResponseEntity.ok(articles);
+    }
 }

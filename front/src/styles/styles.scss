@@ -1,14 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; font-family: Inter, "Helvetica Neue", sans-serif; }
 .auth-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 40px;
-
+      position: relative;
     h2 {
+        margin-top: 40px;
         margin-bottom: 20px;
     }
 
@@ -45,3 +45,36 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     }
 }
 
+.card {
+  background: #F5F5F5;
+  border-radius: 8px;
+  padding: 16px;
+  width: 100%;
+  max-width: 360px;
+  height: 180px;
+  margin: 12px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  cursor: pointer;
+  h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  &_meta {
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+  }
+  &_content {
+    font-size: 14px;
+    line-height: 1.4;
+    margin: 8px 0;
+    display: -webkit-box; 
+    -webkit-box-orient: vertical;  
+    overflow: hidden;
+  }
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

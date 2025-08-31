@@ -19,7 +19,8 @@ export class ArticlesComponent implements OnInit {
   }
 
   loadArticles(): void {
-    this.articleService.getAllArticles().subscribe({
+    this.isLoading = true;
+    this.articleService.getArticlesBySubscribedTopics().subscribe({
       next: (data) => {
         this.articles = data;
         this.isLoading = false;

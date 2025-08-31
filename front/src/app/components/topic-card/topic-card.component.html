@@ -1,7 +1,7 @@
-<div class="topic-card">
-  <h3 class="topic-card_title">{{ topic.name }}</h3>
+<div class="card topic-card">
+  <h3 class="card_title topic-card_title">{{ topic.name }}</h3>
 
-  <p class="topic-card_content">
+  <p class="card_content topic-card_content">
     {{ topic.description }}
   </p>
 
@@ -10,6 +10,6 @@
     class="subscribe-btn" 
     (click)="toggleSubscription()"
     [ngClass]="{ 'subscribe-btn_subscribed': topic.isSubscribed }">
-    {{ topic.isSubscribed ? 'Déjà abonné' : 'Abonné' }}
+    {{ topic.isSubscribed ? "Déjà abonné" : "S'abonner" }}
   </button>
 </div>

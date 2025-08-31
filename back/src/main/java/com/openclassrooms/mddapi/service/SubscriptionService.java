@@ -4,8 +4,10 @@ import java.util.*;
 
 import org.springframework.stereotype.Service;
 
+import com.openclassrooms.mddapi.mapper.TopicMapper;
 import com.openclassrooms.mddapi.model.Topic;
 import com.openclassrooms.mddapi.model.User;
+import com.openclassrooms.mddapi.payload.response.TopicResponse;
 import com.openclassrooms.mddapi.repository.TopicRepository;
 import com.openclassrooms.mddapi.repository.UserRepository;
 
@@ -20,7 +22,7 @@ public class SubscriptionService {
         this.topicRepository = topicRepository;
     }
 
-    public Optional<Topic> subscribe(Long topicId, String username) {
+    public Optional<TopicResponse> subscribe(Long topicId, String username) {
         return getUserAndTopic(username, topicId).map(pair -> {
             User user = pair.getKey();
             Topic topic = pair.getValue();
@@ -29,11 +31,12 @@ public class SubscriptionService {
                 user.getSubscribedTopics().add(topic);
                 userRepository.save(user);
             }
-            return topic;
+
+            return TopicMapper.toDto(topic, true);
         });
     }
 
-    public Optional<Topic> unsubscribe(Long topicId, String username) {
+    public Optional<TopicResponse> unsubscribe(Long topicId, String username) {
         return getUserAndTopic(username, topicId).map(pair -> {
             User user = pair.getKey();
             Topic topic = pair.getValue();
@@ -42,7 +45,8 @@ public class SubscriptionService {
                 user.getSubscribedTopics().remove(topic);
                 userRepository.save(user);
             }
-            return topic;
+
+            return TopicMapper.toDto(topic, false);
         });
     }
     

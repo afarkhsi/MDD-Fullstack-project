@@ -1,30 +1,10 @@
 .topic-card {
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  padding: 16px;
   width: 100%;
   max-width: 400px;
-  margin: 12px auto;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  &_title {
-    font-size: 1.2rem;
-    font-weight: bold;
-    margin-bottom: 4px;
-  }
-  &_meta {
-    font-size: 0.9rem;
-    color: #666;
-    display: flex;
-    justify-content: space-between;
-  }
+  max-height: 160px;
+  height: 100%;
   &_content {
-    font-size: 0.95rem;
-    color: #333;
-    line-height: 1.4;
-    margin: 8px 0;
+    -webkit-line-clamp: 3;  
   }
 }
 
