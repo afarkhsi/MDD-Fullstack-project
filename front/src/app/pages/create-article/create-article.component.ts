@@ -33,11 +33,15 @@ export class CreateArticleComponent implements OnInit {
 
   onSubmit(): void {
     if (this.articleForm.invalid) return;
+
     this.articleService.createArticle(this.articleForm.value).subscribe({
-      next: () => console.log('Article créé'),
+      next: () => {
+        console.log('Article créé');
+        // Naviguer seulement après succès
+        this.router.navigate(['/articles']);
+      },
       error: err => console.error('Erreur création', err)
     });
-    this.router.navigate(['/articles']);
   }
 }
 

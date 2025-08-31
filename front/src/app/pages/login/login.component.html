@@ -1,11 +1,12 @@
 <div class="auth-container">
-   <button mat-icon-button routerLink="/"  class="back-arrow">
-    <mat-icon>arrow_back</mat-icon>
-  </button>
 
   <h2 class="auth-title">Se connecter</h2>
 
   <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="auth-form">
+
+    <button mat-icon-button routerLink="/"  class="back-arrow">
+      <mat-icon fontSet="material-icons-outlined">arrow_back</mat-icon>
+    </button>
     <mat-form-field appearance="outline"class="full-width auth-field">
       <mat-label>E-mail ou nom d’utilisateur</mat-label>
       <input matInput formControlName="emailOrUsername" />
