@@ -6,10 +6,11 @@ import java.util.Set;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
-import lombok.Data;
+import lombok.*;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Table(name = "topics")
 public class Topic {
 
@@ -24,9 +25,22 @@ public class Topic {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Article> articles;
 
-    @ManyToMany(mappedBy = "subscribedTopics")
+    @ManyToMany(mappedBy = "subscribedTopics", fetch = FetchType.LAZY)
     private Set<User> subscribers = new HashSet<>();
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Topic)) return false;
+        Topic other = (Topic) o;
+        return id != null && id.equals(other.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

@@ -36,4 +36,9 @@ export class ArticleService {
   getComments(articleId: number): Observable<UserComment[]> {
     return this.httpClient.get<UserComment[]>(`${this.articleUrl}/${articleId}/comments`);
   }
+
+  getArticlesBySubscribedTopics(): Observable<ArticleResponse[]> {
+    return this.httpClient.get<ArticleResponse[]>(`${this.articleUrl}/subscribed`);
+  }
+
 }

@@ -24,14 +24,14 @@ public class SubscriptionController {
     @PostMapping("/{id}/subscribe")
     public ResponseEntity<?> subscribe(@PathVariable Long id, Principal principal) {
         return subscriptionService.subscribe(id, principal.getName())
-            .map(topic -> ResponseEntity.ok(Map.of("message", "Abonnement réussi", "topic", topic)))
+            .map(dto -> ResponseEntity.ok(Map.of("message", "Abonnement réussi", "topic", dto)))
             .orElse(ResponseEntity.badRequest().body(Map.of("message", "Erreur d’abonnement")));
     }
 
     @PostMapping("/{id}/unsubscribe")
     public ResponseEntity<?> unsubscribe(@PathVariable Long id, Principal principal) {
         return subscriptionService.unsubscribe(id, principal.getName())
-            .map(topic -> ResponseEntity.ok(Map.of("message", "Désabonnement réussi", "topic", topic)))
+            .map(dto -> ResponseEntity.ok(Map.of("message", "Désabonnement réussi", "topic", dto)))
             .orElse(ResponseEntity.badRequest().body(Map.of("message", "Erreur de désabonnement")));
     }
     

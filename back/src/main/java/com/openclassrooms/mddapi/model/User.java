@@ -4,10 +4,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Table(name = "users")
 public class User {
 
@@ -24,7 +25,7 @@ public class User {
     @Column(nullable = false, length = 255)
     private String password;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
         name = "user_topic_subscriptions",
         joinColumns = @JoinColumn(name = "user_id"),
@@ -38,5 +39,18 @@ public class User {
         this.username = username;
         this.email = email;
         this.password = password;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User other = (User) o;
+        return id != null && id.equals(other.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

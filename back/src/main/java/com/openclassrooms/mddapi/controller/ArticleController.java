@@ -78,5 +78,11 @@ public class ArticleController {
     public ResponseEntity<List<CommentResponse>> getComments(@PathVariable Long id) {
         return ResponseEntity.ok(commentService.getCommentsByArticleId(id));
     }
-
+    
+    @GetMapping("/subscribed")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<List<ArticleResponse>> getArticlesFromSubscribedTopics(Principal principal) {
+        List<ArticleResponse> articles = articleService.getArticlesFromSubscribedTopics(principal.getName());
+        return ResponseEntity.ok(articles);
+    }
 }
