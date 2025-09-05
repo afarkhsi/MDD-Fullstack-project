@@ -18,7 +18,6 @@ export class TopicsComponent implements OnInit {
     this.topicsService.getAllTopics().subscribe({
       next: (data) => this.topics = data,
       error: (err) => console.error('Erreur lors du chargement des topics', err) 
-    }
-  );
+    });
   }
 }

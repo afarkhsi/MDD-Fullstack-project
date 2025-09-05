@@ -11,6 +11,7 @@ import { AuthGuard } from './core/guards/auth.guards';
 import { GuestGuard } from './core/guards/guest.guards';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { ArticleDetailsComponent } from './pages/article-details/article-details.component';
+import { AccountComponent } from './pages/account/account.component';
 
 
 const routes: Routes = [
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent, title: 'Monde de Dév', canActivate: [GuestGuard] },
   { path: 'register', component: RegisterComponent, title: 'Register', canActivate: [GuestGuard] },
   { path: 'login', component: LoginComponent, title: 'Login', canActivate: [GuestGuard] },
+  { path: 'account', component: AccountComponent, title: 'Account', canActivate: [AuthGuard] },
   { path: 'articles/create', component: CreateArticleComponent, title: 'Créer un article', canActivate: [AuthGuard] },
   { path: 'articles', component: ArticlesComponent, title: 'Articles', canActivate: [AuthGuard] },
   { path: 'articles/:id', component: ArticleDetailsComponent, title: 'Article Détail', canActivate: [AuthGuard]  },

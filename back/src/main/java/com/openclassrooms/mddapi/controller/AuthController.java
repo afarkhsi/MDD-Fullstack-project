@@ -1,6 +1,9 @@
 package com.openclassrooms.mddapi.controller;
 
+import java.security.Principal;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -11,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +25,8 @@ import com.openclassrooms.mddapi.payload.request.SignInRequest;
 import com.openclassrooms.mddapi.payload.request.SignupRequest;
 import com.openclassrooms.mddapi.payload.response.JwtResponse;
 import com.openclassrooms.mddapi.payload.response.MessageResponse;
+import com.openclassrooms.mddapi.payload.response.TopicResponse;
+import com.openclassrooms.mddapi.payload.response.UserResponse;
 import com.openclassrooms.mddapi.service.UserService;
 import com.openclassrooms.mddapi.security.jwt.JwtUtils;
 import com.openclassrooms.mddapi.security.service.UserDetailsImpl;
@@ -108,6 +114,32 @@ public class AuthController {
 	    return ResponseEntity.ok(jwtResponse);
 	}
 	
+	/*
+	@GetMapping("/me")
+	public ResponseEntity<UserResponse> getCurrentUser(Principal principal) {
+	    // principal.getName() = username ou email selon ton UserDetailsImpl
+	    User user = getUserFromIdentifier(principal.getName());
+
+	    // Mapper vers un DTO pour éviter les boucles infinies
+	    UserResponse dto = new UserResponse();
+	    dto.setId(user.getId());
+	    dto.setUsername(user.getUsername());
+	    dto.setEmail(user.getEmail());
+
+	    Set<TopicResponse> topics = user.getSubscribedTopics().stream().map(topic -> {
+	        TopicResponse tr = new TopicResponse();
+	        tr.setId(topic.getId());
+	        tr.setName(topic.getName());
+	        tr.setDescription(topic.getDescription());
+	        tr.setIsSubscribed(true);
+	        return tr;
+	    }).collect(Collectors.toSet());
+
+	    dto.setSubscribedTopics(topics);
+
+	    return ResponseEntity.ok(dto);
+	}
+	
 	 private User getUserFromIdentifier(String emailOrUsername) {
 	        Optional<User> userFromEmail = userService.getUserByEmail(emailOrUsername);
 	        Optional<User> userFromUsername = userService.getUserByUsername(emailOrUsername);
@@ -119,5 +151,5 @@ public class AuthController {
 	        }
 
 	        return userFromEmail.isPresent() ? userFromEmail.get() : userFromUsername.get();
-	  }
+	  }*/
 }

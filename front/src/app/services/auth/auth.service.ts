@@ -13,9 +13,7 @@ import { User } from 'src/app/interfaces/user.interface';
 export class AuthService {
   private authUrl = `${environment.baseUrl}/auth`;
   private authStatus = new BehaviorSubject<boolean>(this.hasToken());
-  private currentUserSubject = new BehaviorSubject<User | null>(null);
 
-  currentUser$ = this.currentUserSubject.asObservable();
   authStatus$ = this.authStatus.asObservable();
 
   constructor(
@@ -36,7 +34,6 @@ export class AuthService {
       tap(response => {
         localStorage.setItem('token', response.token);
         this.authStatus.next(true); 
-        this.loadCurrentUser(); 
       })
     );
   }
@@ -46,23 +43,4 @@ export class AuthService {
     this.authStatus.next(false);
     this.router.navigate(['/home']);
   }
-
-  getToken(): string | null {
-    return localStorage.getItem('token');
-  }
-
-  loadCurrentUser(): void {
-    const token = this.getToken();
-    if (token) {
-      this.httpClient.get<User>(`${this.authUrl}/me`).subscribe({
-        next: user => this.currentUserSubject.next(user),
-        error: () => this.currentUserSubject.next(null)
-      });
-    }
-  }
-
-  getCurrentUser(): User | null {
-    return this.currentUserSubject.value;
-  }
-
 }

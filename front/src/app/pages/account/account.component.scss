@@ -1,0 +1,72 @@
+.account-section {
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+
+    label {
+      display: flex;
+      flex-direction: column;
+      font-weight: 600;
+    }
+
+    input {
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      align-self: flex-start;
+      background-color: #7763C5;
+      color: white;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+
+      &:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  .subscriptions {
+    display: grid;
+    gap: 12px;
+
+    .subscription-card {
+      background: #f5f5f5;
+      padding: 12px;
+      border-radius: 6px;
+
+      h4 {
+        margin: 0 0 4px;
+      }
+
+      button {
+        background-color: #a40f0f;
+        color: white;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+
+        &:hover {
+          background-color: #d11a1a;
+        }
+      }
+    }
+  }
+
+  .message {
+    margin: 10px 0;
+    color: green;
+  }
+}

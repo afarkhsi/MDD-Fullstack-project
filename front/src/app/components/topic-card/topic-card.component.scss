@@ -27,4 +27,8 @@
             background-color: darkgrey;
         }
     }
+    &:disabled {
+    background-color: grey;
+    cursor: not-allowed;
+  }
 }

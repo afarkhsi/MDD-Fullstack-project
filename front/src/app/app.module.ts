@@ -31,6 +31,7 @@ import { CreateArticleComponent } from './pages/create-article/create-article.co
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { ArticleDetailsComponent } from './pages/article-details/article-details.component';
 import { CommentaryComponent } from './components/commentary/commentary.component';
+import { AccountComponent } from './pages/account/account.component';
 
 const materialModules = [
   MatButtonModule,
@@ -64,6 +65,7 @@ const materialModules = [
     NotFoundComponent,
     ArticleDetailsComponent,
     CommentaryComponent,
+    AccountComponent,
   ],
   imports: [
     BrowserModule,

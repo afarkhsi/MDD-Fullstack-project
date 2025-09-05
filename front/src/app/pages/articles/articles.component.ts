@@ -11,6 +11,7 @@ export class ArticlesComponent implements OnInit {
   articles: ArticleResponse[] = [];
   isLoading = true;
   errorMessage: string | null = null;
+  sortOrder: 'asc' | 'desc' = 'desc';
 
   constructor(private articleService: ArticleService) {}
 
@@ -22,7 +23,7 @@ export class ArticlesComponent implements OnInit {
     this.isLoading = true;
     this.articleService.getArticlesBySubscribedTopics().subscribe({
       next: (data) => {
-        this.articles = data;
+        this.articles = this.sortArticles(data, this.sortOrder);
         this.isLoading = false;
       },
       error: (err) => {
@@ -30,6 +31,19 @@ export class ArticlesComponent implements OnInit {
         this.errorMessage = 'Impossible de charger les articles.';
         this.isLoading = false;
       }
+    });
+  }
+
+  toggleSortOrder(): void {
+    this.sortOrder = this.sortOrder === 'desc' ? 'asc' : 'desc';
+    this.articles = this.sortArticles(this.articles, this.sortOrder);
+  }
+
+  private sortArticles(articles: ArticleResponse[], order: 'asc' | 'desc'): ArticleResponse[] {
+    return [...articles].sort((a, b) => {
+      const dateA = new Date(a.createdAt).getTime();
+      const dateB = new Date(b.createdAt).getTime();
+      return order === 'desc' ? dateB - dateA : dateA - dateB;
     });
   }
 }

@@ -1,5 +1,7 @@
 package com.openclassrooms.mddapi.service;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -9,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import com.openclassrooms.mddapi.model.User;
 import com.openclassrooms.mddapi.payload.request.SignupRequest;
+import com.openclassrooms.mddapi.payload.response.TopicResponse;
+import com.openclassrooms.mddapi.payload.response.UserResponse;
 import com.openclassrooms.mddapi.repository.UserRepository;
 
 import lombok.Data;
@@ -74,6 +78,26 @@ public class UserService {
     public boolean isUsernameExist(String username) {
         return userRepository.existsByUsername(username);
     }
+    
+    private UserResponse mapToUserResponse(User user) {
+        UserResponse dto = new UserResponse();
+        dto.setId(user.getId());
+        dto.setUsername(user.getUsername());
+        dto.setEmail(user.getEmail());
+
+        Set<TopicResponse> topics = user.getSubscribedTopics().stream().map(topic -> {
+            TopicResponse tr = new TopicResponse();
+            tr.setId(topic.getId());
+            tr.setName(topic.getName());
+            tr.setDescription(topic.getDescription());
+            tr.setIsSubscribed(true);
+            return tr;
+        }).collect(Collectors.toSet());
+
+        dto.setSubscribedTopics(topics);
+        return dto;
+    }
+
 
     public User signUpUser(SignupRequest signUpRequest) {
         User user = new User();
@@ -85,5 +109,18 @@ public class UserService {
         user.setPassword(encodedPassword);
  
         return saveUser(user);
+    }
+    
+    public User updateUser(User existingUser, String username, String email, String password) {
+        if (username != null && !username.isBlank()) {
+            existingUser.setUsername(username);
+        }
+        if (email != null && !email.isBlank()) {
+            existingUser.setEmail(email);
+        }
+        if (password != null && !password.isBlank()) {
+            existingUser.setPassword(passwordEncoder.encode(password));
+        }
+        return userRepository.save(existingUser);
     }
 }

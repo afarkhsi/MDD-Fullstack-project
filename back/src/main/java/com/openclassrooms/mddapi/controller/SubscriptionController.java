@@ -3,11 +3,13 @@ package com.openclassrooms.mddapi.controller;
 import java.security.Principal;
 import java.util.*;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.openclassrooms.mddapi.model.Topic;
+import com.openclassrooms.mddapi.payload.response.TopicResponse;
 import com.openclassrooms.mddapi.service.SubscriptionService;
 
 @RestController
@@ -36,8 +38,19 @@ public class SubscriptionController {
     }
     
     @GetMapping("/user-subscriptions")
-    public ResponseEntity<Set<Topic>> getMySubscriptions(Principal principal) {
-        Set<Topic> topics = subscriptionService.getSubscriptions(principal.getName());
+    public ResponseEntity<Set<TopicResponse>> getMySubscriptions(Principal principal) {
+        Set<TopicResponse> topics = subscriptionService.getSubscriptions(principal.getName())
+            .stream()
+            .map(topic -> {
+                TopicResponse dto = new TopicResponse();
+                dto.setId(topic.getId());
+                dto.setName(topic.getName());
+                dto.setDescription(topic.getDescription());
+                dto.setIsSubscribed(true);
+                return dto;
+            })
+            .collect(Collectors.toSet());
+
         return ResponseEntity.ok(topics);
     }
 }

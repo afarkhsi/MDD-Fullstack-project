@@ -1,0 +1,37 @@
+<section class="account-section" *ngIf="!isLoading">
+  <h2>Profil utilisateur</h2>
+
+  <form [formGroup]="accountForm" (ngSubmit)="onSave()">
+    <label>
+      Username
+      <input type="text" formControlName="username" />
+    </label>
+
+    <label>
+      Email
+      <input type="email" formControlName="email" />
+    </label>
+
+    <label>
+      Mot de passe
+      <input type="password" formControlName="password" placeholder="Laisser vide pour ne pas changer" />
+    </label>
+
+    <button type="submit" [disabled]="accountForm.invalid">Sauvegarder</button>
+  </form>
+
+  <div *ngIf="message" class="message">{{ message }}</div>
+
+  <h3>Abonnements</h3>
+  <div *ngIf="subscriptions.length === 0">
+    Aucun abonnement en cours.
+  </div>
+  <div class="subscriptions">
+    <app-topic-card
+        *ngFor="let topic of subscriptions"
+        [topic]="topic"
+        mode="unsubscribe-only"
+        (unsubscribed)="onUnsubscribe($event)">
+    </app-topic-card>
+  </div>
+</section>
