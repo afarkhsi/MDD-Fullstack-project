@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import com.openclassrooms.mddapi.exception.ApiExceptions;
 import com.openclassrooms.mddapi.payload.response.TopicResponse;
 import com.openclassrooms.mddapi.service.TopicService;
 import java.security.Principal;
@@ -28,7 +29,11 @@ public class TopicController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<TopicResponse>> getAllTopics(Principal principal) {
     	String username = principal.getName();
-        return ResponseEntity.ok(topicService.getAllTopics(username));
+    	List<TopicResponse> topics = topicService.getAllTopics(username);
+		if (topics.isEmpty()) {
+	        throw new ApiExceptions.ResourceNotFoundException("Aucun thème trouvé");
+	    }
+        return ResponseEntity.ok(topics);
     }
     
     /**
@@ -37,6 +42,10 @@ public class TopicController {
     @GetMapping("/{id}")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<TopicResponse> getTopicById(@PathVariable Long id, Principal principal) {
-        return ResponseEntity.ok(topicService.getById(id, principal.getName()));
+    	TopicResponse topic = topicService.getById(id, principal.getName());
+    	if (topic == null) {
+            throw new ApiExceptions.ResourceNotFoundException("Thème introuvable");
+        }
+        return ResponseEntity.ok(topic);
     }
 }

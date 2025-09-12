@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import com.openclassrooms.mddapi.exception.ApiExceptions;
 import com.openclassrooms.mddapi.model.Topic;
 import com.openclassrooms.mddapi.model.User;
 import com.openclassrooms.mddapi.payload.request.ArticleRequest;
@@ -42,10 +43,10 @@ public class ArticleController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> createArticle(@Valid @RequestBody ArticleRequest request, Principal principal) {
         User author = userService.getUserByUsername(principal.getName())
-                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
+                .orElseThrow(() -> new ApiExceptions.ResourceNotFoundException("Utilisateur non trouvé"));
 
         Topic topic = topicService.getByIdEntity(request.getTopicId())
-                .orElseThrow(() -> new RuntimeException("Thème non trouvé"));
+                .orElseThrow(() -> new ApiExceptions.ResourceNotFoundException("Thème non trouvé"));
 
         articleService.createArticle(request, author, topic);
 
@@ -62,6 +63,9 @@ public class ArticleController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ArticleResponse> getArticleById(@PathVariable Long id) {
         ArticleResponse response = articleService.getById(id);
+        if (response == null) {
+            throw new ApiExceptions.ResourceNotFoundException("Article non trouvé");
+        }
         return ResponseEntity.ok(response);
     }
     
@@ -75,13 +79,20 @@ public class ArticleController {
     @GetMapping("/{id}/comments")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<CommentResponse>> getComments(@PathVariable Long id) {
-        return ResponseEntity.ok(commentService.getCommentsByArticleId(id));
+        List<CommentResponse> comments = commentService.getCommentsByArticleId(id);
+        if (comments.isEmpty()) {
+            throw new ApiExceptions.ResourceNotFoundException("Aucun commentaire trouvé");
+        }
+        return ResponseEntity.ok(comments);
     }
     
     @GetMapping("/subscribed")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<ArticleResponse>> getArticlesFromSubscribedTopics(Principal principal) {
         List<ArticleResponse> articles = articleService.getArticlesFromSubscribedTopics(principal.getName());
+        if (articles.isEmpty()) {
+            throw new ApiExceptions.ResourceNotFoundException("Aucun article trouvé pour vos abonnements");
+        }
         return ResponseEntity.ok(articles);
     }
 }

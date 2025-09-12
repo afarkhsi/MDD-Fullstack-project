@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.openclassrooms.mddapi.exception.ApiExceptions;
 import com.openclassrooms.mddapi.model.User;
 import com.openclassrooms.mddapi.payload.response.TopicResponse;
 import com.openclassrooms.mddapi.payload.response.UserResponse;
@@ -56,14 +57,22 @@ public class UserController {
             tr.setIsSubscribed(true);
             return tr;
         }).collect(Collectors.toSet());
+        
+        if (topics.isEmpty()) {
+            throw new ApiExceptions.ResourceNotFoundException("Aucun abonnement trouvé");
+        }
 
         return ResponseEntity.ok(topics);
     }
 
     @DeleteMapping("/me/subscriptions/{topicId}")
     public ResponseEntity<?> unsubscribe(@PathVariable Long topicId, Principal principal) {
-        subscriptionService.unsubscribe(topicId, principal.getName());
-        return ResponseEntity.ok(Map.of("message", "Désabonnement réussi"));
+    	TopicResponse topic = subscriptionService
+            .unsubscribe(topicId, principal.getName())
+            .orElseThrow(() -> new ApiExceptions.BadRequestException("Erreur lors du désabonnement"));
+        
+        return ResponseEntity.ok(Map.of("message", "Désabonnement réussi",
+                "topic", topic));
     }
 
     // Mapper interne
