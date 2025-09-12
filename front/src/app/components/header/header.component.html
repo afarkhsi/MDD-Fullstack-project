@@ -1,22 +1,47 @@
-<header class="app-header">
-  <div class="header-left">
-    <img src="assets/logo_p6.png" alt="Logo" class="logo" />
-  </div>
+<mat-sidenav-container class="sidenav-container">
+  <!-- Drawer mobile -->
+  <mat-sidenav #drawer mode="over" position="end" class="mobile-drawer">
+    <div class="drawer-content">
+      <nav class="drawer-nav header-nav">
+        <a (click)="logout(); drawer.close()" class="header-nav_item disconnect">Se déconnecter</a>
+        <a routerLink="/articles" routerLinkActive="active-link" (click)="drawer.close()" class="header-nav_item">Articles</a>
+        <a routerLink="/topics" routerLinkActive="active-link" (click)="drawer.close()" class="header-nav_item">Thèmes</a>
+      </nav>
 
-  <nav *ngIf="isAuthenticated" class="header-nav">
-    <a (click)="logout()" class="disconnect">Se déconnecter</a>
-    <a routerLink="/articles" class="header-nav_item" routerLinkActive="active-link">Articles</a>
-    <a routerLink="/topics" class="header-nav_item" routerLinkActive="active-link">Thèmes</a>
-  </nav>
+      <div class="drawer-footer header-right">
+        <a routerLink="/account" routerLinkActive="active-avatar" (click)="drawer.close()" class="avatar-container">
+          <mat-icon fontSet="material-icons-outlined" class="avatar-icon">person</mat-icon>
+        </a>
+      </div>
+    </div>
+  </mat-sidenav>
 
-  <div *ngIf="isAuthenticated" class="header-right">
-    <a 
-      routerLink="/account" 
-      routerLinkActive="active-avatar" 
-      class="avatar-container"
-      [routerLinkActiveOptions]="{ exact: true }"
-    >
-      <mat-icon fontSet="material-icons-outlined" class="avatar-icon">person</mat-icon>
-    </a>
-  </div>
-</header>
+  <!-- Contenu + Header -->
+  <mat-sidenav-content class="content-shell">
+    <header class="app-header">
+      <div class="header-left">
+        <img src="assets/logo_p6.png" alt="Logo" class="logo" />
+      </div>
+
+      <nav *ngIf="isAuthenticated" class="header-nav desktop-nav">
+        <a (click)="logout()" class="disconnect">Se déconnecter</a>
+        <a routerLink="/articles" class="header-nav_item" routerLinkActive="active-link">Articles</a>
+        <a routerLink="/topics" class="header-nav_item" routerLinkActive="active-link">Thèmes</a>
+      </nav>
+
+      <div *ngIf="isAuthenticated" class="header-right desktop-nav">
+        <a routerLink="/account" routerLinkActive="active-avatar" class="avatar-container" [routerLinkActiveOptions]="{ exact: true }">
+          <mat-icon fontSet="material-icons-outlined" class="avatar-icon">person</mat-icon>
+        </a>
+      </div>
+
+      <button *ngIf="isAuthenticated" mat-icon-button class="burger" (click)="drawer.toggle()">
+        <mat-icon fontSet="material-icons-outlined">menu</mat-icon>
+      </button>
+    </header>
+
+    <main class="page-content">
+      <router-outlet></router-outlet>
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>

@@ -80,9 +80,6 @@ public class ArticleController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<CommentResponse>> getComments(@PathVariable Long id) {
         List<CommentResponse> comments = commentService.getCommentsByArticleId(id);
-        if (comments.isEmpty()) {
-            throw new ApiExceptions.ResourceNotFoundException("Aucun commentaire trouvé");
-        }
         return ResponseEntity.ok(comments);
     }
     

@@ -1,37 +1,68 @@
+@import 'mixins';
+
+.wrapper {
+  max-width: 1200px;
+  padding: 20px;
+  @include mobile-only {
+    padding: 10px;
+  }
+}
+
 .article-detail {
   max-width: 800px;
   margin: 2rem auto;
   padding: 1rem;
   box-sizing: border-box;
+  @include mobile-only {
+    margin: 0.5rem auto;
+    padding: 0rem;
+  }
 }
 
 .header-row {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+  // display: flex;
+  // align-items: center;
+  // gap: 1rem;
+  position: relative;
+  @include mobile-only {
+    align-items: start;
+    display: flex;
+    gap: 1rem;
+  }
 
   .article-title {
     margin: 0;
-    font-size: 1.8rem;
-    font-weight: bold;
+    font-size: 24px;
+    font-weight: 600;
     color: #1f1f2e;
+    @include mobile-only {
+      align-items: start;
+    }
   }
 
   .back-arrow {
-    margin-right: 0.5rem;
+    position: absolute;
+    left: -40px;
+    @include mobile-only {
+      position: static;
+    }
   }
 }
 
 .meta-row {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 1rem;
-  font-size: 0.95rem;
-  color: #666;
-  margin: 0.5rem 0 1.5rem;
+  font-size: 20px;
+  color: #000000;
+  margin: 30px 0px;
+  @include mobile-only {
+      grid-template-columns: 1fr 1fr;
+  }
 }
 
 .article-description {
-  font-size: 1.1rem;
+  font-size: 20px;
   line-height: 1.6;
   color: #333;
   margin-bottom: 2rem;
@@ -40,5 +71,5 @@
 .separator {
   border: none;
   border-top: 1px solid #ddd;
-  margin: 2rem 0;
+  margin: 20px 0;
 }

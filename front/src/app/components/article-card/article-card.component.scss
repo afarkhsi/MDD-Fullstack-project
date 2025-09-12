@@ -1,7 +1,6 @@
+@import 'mixins';
+
 .card-article {
-  width: 100%;
-  max-width: 360px;
-  height: 180px;
   cursor: pointer;
   &_content {
     -webkit-line-clamp: 5;  

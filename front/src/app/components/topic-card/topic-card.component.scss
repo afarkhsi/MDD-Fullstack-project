@@ -1,8 +1,6 @@
+@import 'mixins';
+
 .topic-card {
-  width: 100%;
-  max-width: 400px;
-  max-height: 160px;
-  height: 100%;
   &_content {
     -webkit-line-clamp: 3;  
   }
@@ -30,5 +28,8 @@
     &:disabled {
     background-color: grey;
     cursor: not-allowed;
+  }
+  @include mobile-only {
+    width: 139px;
   }
 }

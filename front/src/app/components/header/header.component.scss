@@ -1,3 +1,5 @@
+@import 'mixins';
+
 .app-header {
   display: flex;
   justify-content: space-between;
@@ -5,10 +7,19 @@
   padding: 1rem 2rem;
   background-color: #ffffff;
   border-bottom: 1px solid #ddd;
+  position: relative;
+  z-index: 1000;
+  @include mobile-only {
+    padding: 0px 10px;
+    height: 62px;
+  }
 }
 
 .logo {
   height: 80px;
+  @include mobile-only {
+    height: 53px;
+  }
 }
 
 .header-nav {
@@ -18,7 +29,7 @@
   &_item {
     text-decoration: none;
     color: #333;
-    font-weight: 600;
+    font-weight: 400;
 
     &:hover {
       color: #7763C5;
@@ -26,6 +37,13 @@
     &.active-link {
       color: #7763C5;
       border-bottom: 2px solid #7763C5;
+      @include mobile-only {
+        border-bottom: none;
+      }
+    }
+    @include mobile-only {
+      border-bottom: none;
+      font-size: 20px;
     }
   }
 }
@@ -50,6 +68,10 @@
   border-radius: 50%;
   cursor: pointer;
 
+  @include mobile-only {
+    border-bottom: none;
+  }
+
   .avatar-icon {
     font-size: 40px;    
     width: 40px;
@@ -63,4 +85,63 @@
        color: #7763C5;
     }
   }
+}
+
+.sidenav-container {
+  height: 100%;
+}
+
+.mobile-drawer {
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.drawer-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.drawer-nav {
+  display: flex;
+  flex-direction: column;
+  padding: 3rem 1rem;
+  align-items: end;
+  gap: 0.5rem;
+}
+
+.drawer-footer {
+  display: flex;
+  justify-content: flex-end;
+  height: 50px;
+  padding: 5px 10px;
+}
+
+/* Desktop */
+.desktop-nav {
+  display: flex;
+}
+
+.burger {
+  display: none;
+}
+
+@include mobile-only {
+  .desktop-nav {
+    display: none;
+  }
+  .burger {
+    display: block;
+  }
+}
+
+::ng-deep .mat-drawer-backdrop {
+  z-index: 1001 !important;
+}
+
+::ng-deep .mat-drawer.mat-drawer-end {
+  z-index: 1002 !important;
 }

@@ -2,7 +2,7 @@
   <h3 class="card_title">{{ article.title }}</h3>
 
   <div class="card_meta">
-    <span *ngIf="article.createdAt">{{ article.createdAt }}</span>
+    <span *ngIf="article.createdAt">{{ article.createdAt | date:'dd MMM yyyy' }}</span>
     <span *ngIf="article.authorUsername">{{ article.authorUsername.name }}</span>
   </div>
 

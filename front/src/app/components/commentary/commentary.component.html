@@ -2,15 +2,20 @@
   <h3>Commentaires</h3>
 <div class="comment" *ngFor="let comment of comments">
     <div class="comment_header">
-        <strong>{{ comment.username }}</strong>
+        <p>{{ comment.username }}</p>
         </div>
     <div class="comment_content">
         <p>{{ comment.comment }}</p>
     </div>
 </div>
 
+<div class="comment_add">
   <textarea [(ngModel)]="newComment" placeholder="Écrivez ici votre commentaire" class="comment-input"></textarea>
-  <div class="comment-actions">
-    <button class="btn-send" (click)="sendComment()">Envoyer le commentaire</button>
+  <div class="comment_add_actions">
+    <button class="btn-send" (click)="sendComment()">
+      <img src="../../../assets/icon _send_.svg" alt="Send icon" />
+    </button>
   </div>
+</div>
+  
 </div>
