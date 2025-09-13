@@ -1,27 +1,29 @@
-<div class="form-header">
-  <button mat-icon-button routerLink="/articles" class="back-arrow">
-    <mat-icon fontSet="material-icons-outlined">arrow_back</mat-icon>
-  </button>
-  <h2 class="form-title">Créer un nouvel article</h2>
-</div>
-
-<form class="article-form" [formGroup]="articleForm" (ngSubmit)="onSubmit()">
-  <div class="form-group">
-    <select class="form-control" formControlName="topicId" [class.is-placeholder]="articleForm.get('topicId')?.value == null">
-        <option [ngValue]="null" disabled>Sélectionner un thème</option>
-        <option *ngFor="let topic of topics" [ngValue]="topic.id">{{ topic.name }}</option>
-    </select>
+<section>
+  <div class="form-header">
+    <button mat-icon-button routerLink="/articles" class="back-arrow">
+      <mat-icon fontSet="material-icons-outlined">arrow_back</mat-icon>
+    </button>
+    <h2 class="form-title">Créer un nouvel article</h2>
   </div>
 
-  <div class="form-group">
-    <input class="form-control" type="text" id="title" formControlName="title" placeholder="Titre de l'article"/>
-  </div>
+  <form class="article-form" [formGroup]="articleForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <select class="form-control" formControlName="topicId" [class.is-placeholder]="articleForm.get('topicId')?.value == null">
+          <option [ngValue]="null" disabled>Sélectionner un thème</option>
+          <option *ngFor="let topic of topics" [ngValue]="topic.id">{{ topic.name }}</option>
+      </select>
+    </div>
 
-  <div class="form-group">
-    <textarea class="form-control" id="description" formControlName="description" placeholder="Contenu de l'article"></textarea>
-  </div>
+    <div class="form-group">
+      <input class="form-control" type="text" id="title" formControlName="title" placeholder="Titre de l'article"/>
+    </div>
 
-  <div class="form-actions">
-    <button class="btn-primary form-actions_button" type="submit" [disabled]="articleForm.invalid">Créer</button>
-  </div>
-</form>
+    <div class="form-group">
+      <textarea class="form-control" id="description" formControlName="description" placeholder="Contenu de l'article"></textarea>
+    </div>
+
+    <div class="form-actions">
+      <button class="btn-primary form-actions_button" type="submit" [disabled]="articleForm.invalid">Créer</button>
+    </div>
+  </form>
+</section>

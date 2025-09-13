@@ -1,9 +1,11 @@
 @import 'mixins';
 
+section{
+  padding: 1rem;
+}
 form {
   max-width: 600px;
   margin: 2rem auto;
-  padding: 1rem;
   box-sizing: border-box;
   background: #fff;
   display: flex;
@@ -17,14 +19,26 @@ form {
   justify-content: center;
   position: relative;
   margin-bottom: 1rem;
+  @include mobile-only {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
 }
 
 .form-title {
   margin: 0;
   font-size: 24px;
   font-weight: bold;
+  @include mobile-only {
+    align-self: center;
+  }
 }
 
+.form-actions {
+  display: flex;
+  justify-content: center;
+}
 label {
   font-weight: bold;
   margin-bottom: 0.4rem;
@@ -37,23 +51,22 @@ textarea {
   max-width: 100%;
   box-sizing: border-box;
   padding: 0.75rem;
-  border: 1px solid #ccc;
+  border: 2px solid #7763C5;
   border-radius: 6px;
-  font-size: 1rem;
+  font-size: 20px;
 }
 
 textarea {
-   max-height: 212px;
-  height: 100%;
+  height: 212px;
 }
 .form-actions_button {
-  align-self: flex-end;
-  padding: 0.75rem 1.2rem;
-  background-color: #6a4cff;
+  background-color: #7763C5;
   color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   font-weight: bold;
+  width: 139px;
+  height: 40px;
   cursor: pointer;
 }
 
@@ -82,4 +95,7 @@ option[disabled] { color: #757575; }
 .back-arrow {
   position: absolute;
   left: 0;
+  @include mobile-only {
+    position: relative;
+  }
 }

@@ -16,9 +16,8 @@
     </div>
   </mat-sidenav>
 
-  <!-- Contenu + Header -->
   <mat-sidenav-content class="content-shell">
-    <header class="app-header">
+    <header class="app-header" *ngIf="showHeader">
       <div class="header-left">
         <img src="assets/logo_p6.png" alt="Logo" class="logo" />
       </div>
