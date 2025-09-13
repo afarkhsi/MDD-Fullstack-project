@@ -79,26 +79,6 @@ public class UserService {
         return userRepository.existsByUsername(username);
     }
     
-    private UserResponse mapToUserResponse(User user) {
-        UserResponse dto = new UserResponse();
-        dto.setId(user.getId());
-        dto.setUsername(user.getUsername());
-        dto.setEmail(user.getEmail());
-
-        Set<TopicResponse> topics = user.getSubscribedTopics().stream().map(topic -> {
-            TopicResponse tr = new TopicResponse();
-            tr.setId(topic.getId());
-            tr.setName(topic.getName());
-            tr.setDescription(topic.getDescription());
-            tr.setIsSubscribed(true);
-            return tr;
-        }).collect(Collectors.toSet());
-
-        dto.setSubscribedTopics(topics);
-        return dto;
-    }
-
-
     public User signUpUser(SignupRequest signUpRequest) {
         User user = new User();
 

@@ -48,12 +48,14 @@ main {
 }
 
 .auth-button {
-    background-color: #7763C5;
-    font-weight: 700;
+    background-color: #7763C5 !important;
+    color: white !important;
+    font-weight: 500;
     width: 128px;
     height: 40px;
     align-self: center;
-    border-radius: 8px;
+    margin-top: 30px !important;
+    border-radius: 8px !important;
     &:hover {
         background-color: #6a4bd4;
     }

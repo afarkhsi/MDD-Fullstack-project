@@ -19,6 +19,4 @@ public class ApiExceptions {
             super(message);
         }
     }
-
-    // Tu peux en ajouter d'autres ici...
 }

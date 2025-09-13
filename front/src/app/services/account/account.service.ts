@@ -31,8 +31,4 @@ export class AccountService {
   getSubscriptions(): Observable<Topic[]> {
     return this.http.get<Topic[]>(`${this.baseUrl}/subscriptions`);
   }
-
-  unsubscribe(topicId: number): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/subscriptions/${topicId}`);
-  }
 }

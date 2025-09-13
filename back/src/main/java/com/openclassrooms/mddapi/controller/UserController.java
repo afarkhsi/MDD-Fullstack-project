@@ -65,16 +65,6 @@ public class UserController {
         return ResponseEntity.ok(topics);
     }
 
-    @DeleteMapping("/me/subscriptions/{topicId}")
-    public ResponseEntity<?> unsubscribe(@PathVariable Long topicId, Principal principal) {
-    	TopicResponse topic = subscriptionService
-            .unsubscribe(topicId, principal.getName())
-            .orElseThrow(() -> new ApiExceptions.BadRequestException("Erreur lors du désabonnement"));
-        
-        return ResponseEntity.ok(Map.of("message", "Désabonnement réussi",
-                "topic", topic));
-    }
-
     // Mapper interne
     private UserResponse mapToUserResponse(User user) {
         UserResponse dto = new UserResponse();

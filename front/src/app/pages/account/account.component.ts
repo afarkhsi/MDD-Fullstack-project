@@ -46,8 +46,7 @@ export class AccountComponent implements OnInit {
 
   loadSubscriptions(): void {
     this.subscribeService.getUserSubscriptions().subscribe({
-      next: (topics) => this.subscriptions = topics,
-      error: () => this.message = 'Erreur lors du chargement des abonnements'
+      next: (topics) => this.subscriptions = topics
     });
   }
 
@@ -61,6 +60,7 @@ export class AccountComponent implements OnInit {
   }
 
   onUnsubscribe(topicId: number): void {
+    console.log('unsubscribe', topicId)
     this.subscribeService.unsubscribeTopic(topicId).subscribe({
       next: () => {
         this.subscriptions = this.subscriptions.filter(t => t.id !== topicId);

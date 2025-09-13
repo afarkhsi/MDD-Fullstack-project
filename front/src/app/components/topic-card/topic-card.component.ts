@@ -18,18 +18,8 @@ export class TopicCardComponent {
     if (!this.topic) return;
 
     if (this.topic.isSubscribed) {
-      if (this.mode === 'subscribe-only') return;
-      this.subscribeService.unsubscribeTopic(this.topic.id).subscribe({
-        next: () => {
-          if (this.mode === 'unsubscribe-only') {
-            // On prévient le parent de retirer la carte
-            this.unsubscribed.emit(this.topic.id);
-          } else {
-            this.topic.isSubscribed = false;
-          }
-        },
-        error: (err) => console.error('Erreur désabonnement', err)
-      });
+      if (this.mode === 'subscribe-only') return; 
+      this.unsubscribed.emit(this.topic.id);
     } else {
       if (this.mode === 'unsubscribe-only') return;
       this.subscribeService.subscribeTopic(this.topic.id).subscribe({
