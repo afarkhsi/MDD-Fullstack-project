@@ -63,7 +63,7 @@ Assurez vous que les variables d'environnement Java sont bien configuré dans vo
 
 2. Configurer la base de données MySQL :
 
-Vous trouverez dans le dossier "documents" au même niveau que le dossier "front" et "back" un script sql à appliquer pour creer et alimenter la base de donnée mdd. Celle ci vous permettra d'avoir des données disponible pour une bonne simulation des usages de l'application.
+Vous trouverez dans le dossier "sql" au même niveau que le dossier "front" et "back" un script sql à appliquer pour creer et alimenter la base de donnée mdd. Celle ci vous permettra d'avoir des données disponible pour une bonne simulation des usages de l'application.
 
 ### Front-End
 
