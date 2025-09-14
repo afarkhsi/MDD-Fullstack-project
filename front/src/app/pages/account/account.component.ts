@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subject, takeUntil } from 'rxjs';
 import { Topic } from 'src/app/interfaces/topic.interface';
 import { AccountService } from 'src/app/services/account/account.service';
 import { SubscribeService } from 'src/app/services/subscribe/subscribe.service';
@@ -15,6 +16,8 @@ export class AccountComponent implements OnInit {
   isLoading = true;
   message: string | null = null;
 
+  private destroy$ = new Subject<void>();
+
   constructor(
     private fb: FormBuilder,
     private accountService: AccountService,
@@ -27,45 +30,59 @@ export class AccountComponent implements OnInit {
   }
 
  loadAccount(): void {
-  this.accountService.getAccount().subscribe({
-    next: (user) => {
-      this.accountForm = this.fb.group({
-        username: [user.username, Validators.required],
-        email: [user.email, [Validators.required, Validators.email]],
-        password: ['']
-      });
-      this.subscriptions = user.subscribedTopics || [];
-      this.isLoading = false;
-    },
-    error: () => {
-      this.message = 'Erreur lors du chargement du compte';
-      this.isLoading = false;
+  this.accountService.getAccount()
+    .pipe(takeUntil(this.destroy$))
+    .subscribe({
+      next: (user) => {
+        this.accountForm = this.fb.group({
+          username: [user.username, Validators.required],
+          email: [user.email, [Validators.required, Validators.email]],
+          password: ['']
+        });
+        this.subscriptions = user.subscribedTopics || [];
+        this.isLoading = false;
+      },
+      error: () => {
+        this.message = 'Erreur lors du chargement du compte';
+        this.isLoading = false;
+      }
     }
-  });
+  );
 }
 
   loadSubscriptions(): void {
-    this.subscribeService.getUserSubscriptions().subscribe({
-      next: (topics) => this.subscriptions = topics
-    });
+    this.subscribeService.getUserSubscriptions()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (topics) => this.subscriptions = topics
+      });
   }
 
   onSave(): void {
     if (this.accountForm.invalid) return;
 
-    this.accountService.updateAccount(this.accountForm.value).subscribe({
-      next: () => this.message = 'Compte mis à jour avec succès',
-      error: () => this.message = 'Erreur lors de la mise à jour du compte'
-    });
+    this.accountService.updateAccount(this.accountForm.value)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => this.message = 'Compte mis à jour avec succès',
+        error: () => this.message = 'Erreur lors de la mise à jour du compte'
+      });
   }
 
   onUnsubscribe(topicId: number): void {
     console.log('unsubscribe', topicId)
-    this.subscribeService.unsubscribeTopic(topicId).subscribe({
-      next: () => {
-        this.subscriptions = this.subscriptions.filter(t => t.id !== topicId);
-      },
-      error: () => this.message = 'Erreur lors du désabonnement'
-    });
+    this.subscribeService.unsubscribeTopic(topicId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.subscriptions = this.subscriptions.filter(t => t.id !== topicId);
+        },
+        error: () => this.message = 'Erreur lors du désabonnement'
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

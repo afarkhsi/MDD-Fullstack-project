@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
 import { ArticleResponse } from 'src/app/interfaces/articleResponse.interface';
 import { ArticleService } from 'src/app/services/article/article.service';
 
@@ -13,6 +14,8 @@ export class ArticlesComponent implements OnInit {
   errorMessage: string | null = null;
   sortOrder: 'asc' | 'desc' = 'desc';
 
+  private destroy$ = new Subject<void>();
+
   constructor(private articleService: ArticleService) {}
 
   ngOnInit(): void {
@@ -21,17 +24,19 @@ export class ArticlesComponent implements OnInit {
 
   loadArticles(): void {
     this.isLoading = true;
-    this.articleService.getArticlesBySubscribedTopics().subscribe({
-      next: (data) => {
-        this.articles = this.sortArticles(data, this.sortOrder);
-        this.isLoading = false;
-      },
-      error: (err) => {
-        console.error('Erreur chargement articles', err);
-        this.errorMessage = 'Impossible de charger les articles.';
-        this.isLoading = false;
-      }
-    });
+    this.articleService.getArticlesBySubscribedTopics()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (data) => {
+          this.articles = this.sortArticles(data, this.sortOrder);
+          this.isLoading = false;
+        },
+        error: (err) => {
+          console.error('Erreur chargement articles', err);
+          this.errorMessage = 'Impossible de charger les articles.';
+          this.isLoading = false;
+        }
+      });
   }
 
   toggleSortOrder(): void {
@@ -45,5 +50,10 @@ export class ArticlesComponent implements OnInit {
       const dateB = new Date(b.createdAt).getTime();
       return order === 'desc' ? dateB - dateA : dateA - dateB;
     });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

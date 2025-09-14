@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
 import { Article } from 'src/app/interfaces/article.interface';
 import { ArticleService } from 'src/app/services/article/article.service';
 
@@ -15,6 +16,8 @@ export class ArticleDetailsComponent implements OnInit {
   isLoading = true;
   errorMessage: string | null = null;
 
+  private destroy$ = new Subject<void>();
+
   constructor(
     private route: ActivatedRoute,
     private articleService: ArticleService
@@ -23,16 +26,23 @@ export class ArticleDetailsComponent implements OnInit {
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     console.log('Article ID from route:', id);
-    this.articleService.getArticleById(id).subscribe({
-      next: (data) => {
-        this.article = data;
-        this.isLoading = false;
-      },
-      error: (err) => {
-        console.error('Erreur chargement article', err);
-        this.errorMessage = 'Article introuvable.';
-        this.isLoading = false;
-      }
-    });
+    this.articleService.getArticleById(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (data) => {
+          this.article = data;
+          this.isLoading = false;
+        },
+        error: (err) => {
+          console.error('Erreur chargement article', err);
+          this.errorMessage = 'Article introuvable.';
+          this.isLoading = false;
+        }
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

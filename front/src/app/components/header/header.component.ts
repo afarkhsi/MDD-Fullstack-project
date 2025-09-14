@@ -1,7 +1,7 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { filter } from 'rxjs';
+import { filter, Subject, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
@@ -13,6 +13,7 @@ export class HeaderComponent implements OnInit {
   isAuthenticated = false;
   showHeader = true;
   isMobile = window.innerWidth <= 800;
+  private destroy$ = new Subject<void>();
 
   constructor(
     private authService: AuthService, 
@@ -21,12 +22,15 @@ export class HeaderComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.authService.authStatus$.subscribe(status => {
+    this.authService.authStatus$
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(status => {
       this.isAuthenticated = status;
     });
     // Détecte responsive en direct
     this.breakpointObserver
       .observe([`(max-width: 800px)`])
+      .pipe(takeUntil(this.destroy$))
       .subscribe(result => {
         this.isMobile = result.matches;
         this.updateHeaderVisibility(this.router.url);
@@ -34,7 +38,10 @@ export class HeaderComponent implements OnInit {
 
     // Détecte la route active
     this.router.events
-      .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
+      .pipe(
+        filter((event): event is NavigationEnd => event instanceof NavigationEnd),
+        takeUntil(this.destroy$)
+      )
       .subscribe(event => {
         this.updateHeaderVisibility(event.urlAfterRedirects);
       });
@@ -58,5 +65,10 @@ export class HeaderComponent implements OnInit {
   
   logout(): void {
     this.authService.logout();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
