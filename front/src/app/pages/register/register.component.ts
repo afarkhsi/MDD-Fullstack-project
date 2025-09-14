@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
 import { RegisterRequest } from 'src/app/interfaces/registerRequest.interface';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { passwordValidator } from 'src/app/utils/password-validator';
 
 @Component({
   selector: 'app-register',
@@ -14,6 +16,8 @@ export class RegisterComponent implements OnInit {
   isLoading = false;
   errorMessage: string | null = null;
 
+  private destroy$ = new Subject<void>();
+
   constructor(
     private fb: FormBuilder,
     private auth: AuthService,
@@ -24,7 +28,7 @@ export class RegisterComponent implements OnInit {
     this.registerForm = this.fb.group({
       username: ['', [Validators.required, Validators.minLength(3)]],
       email:    ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]]
+      password: ['', [Validators.required, passwordValidator]]
     });
   }
 
@@ -35,12 +39,19 @@ export class RegisterComponent implements OnInit {
     this.isLoading = true;
     const payload: RegisterRequest = this.registerForm.value;
 
-    this.auth.register(payload).subscribe({
-      next: () => this.router.navigate(['/login']),
-      error: err => {
-        this.errorMessage = err.error?.message || 'Erreur lors de l’inscription.';
-        this.isLoading = false;
-      }
-    });
+    this.auth.register(payload)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => this.router.navigate(['/login']),
+        error: err => {
+          this.errorMessage = err.error?.message || 'Erreur lors de l’inscription.';
+          this.isLoading = false;
+        }
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

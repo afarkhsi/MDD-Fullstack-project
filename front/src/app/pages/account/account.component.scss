@@ -1,0 +1,75 @@
+@import 'mixins';
+
+.account-section {
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+
+  &_details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &_title{
+      font-weight: 700;
+      font-size: 24px;
+    }
+    form {
+      display: flex;
+      max-width: 281px;
+      width: 100%;
+      flex-direction: column;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    input {
+      padding: 0px 10px;
+      border-radius: 8px;
+      height: 46px;
+      font-size: 20px;
+      border: 2px solid #7763C5;
+    }
+
+    button {
+      background-color: #7763C5;
+      width: 139px;
+      color: white;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 8px;
+      margin: 0 auto; 
+      cursor: pointer;
+
+      &:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  &_abonnements {
+    
+    &_title {
+      font-weight: 700;
+      font-size: 24px;
+      margin-bottom: 10px;
+      
+      text-align: center;
+    }
+    &_items {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      @include mobile-only {
+        grid-template-columns: 1fr;
+      }
+      gap: 12px;
+    }
+  }
+  
+
+  .message {
+    margin: 10px 0;
+    color: green;
+  }
+}

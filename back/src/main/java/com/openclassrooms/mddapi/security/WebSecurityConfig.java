@@ -28,15 +28,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig {
 
- // @Autowired
-  //private UserDetailsServiceImpl userDetailsService;
-
   @Autowired
   private AuthEntryPointJwt unauthorizedHandler;
 
   @Bean
   public AuthTokenFilter authTokenFilter() {
-      // On injecte jwtUtils dans le constructeur si besoin
       return new AuthTokenFilter();
   }
 

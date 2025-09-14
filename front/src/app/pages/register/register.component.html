@@ -1,32 +1,37 @@
 <div class="auth-container">
+
+  <div class="home_image-container masqued-on-desktop">
+    <img src="/assets/logo_p6.png" alt="home logo">
+  </div>
+
   <button mat-icon-button routerLink="/"  class="back-arrow">
-    <mat-icon>arrow_back</mat-icon>
+    <mat-icon fontSet="material-icons-outlined">arrow_back</mat-icon>
   </button>
 
   <h2>Inscription</h2>
 
   <form class="auth-form"[formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <mat-label>Nom d’utilisateur</mat-label>
     <mat-form-field appearance="outline" class="full-width auth-field">
-      <mat-label>Nom d’utilisateur</mat-label>
       <input matInput type="name" formControlName="username" />
       <mat-error *ngIf="registerForm.get('username')?.hasError('required')">
         Le nom d’utilisateur est requis
       </mat-error>
     </mat-form-field>
 
+    <mat-label>Adresse e-mail</mat-label>
     <mat-form-field appearance="outline" class="full-width auth-field">
-      <mat-label>Adresse e-mail</mat-label>
       <input matInput type="email" formControlName="email" />
       <mat-error *ngIf="registerForm.get('email')?.hasError('email')">
         Format d’email invalide
       </mat-error>
     </mat-form-field>
 
+    <mat-label>Mot de passe</mat-label>
     <mat-form-field appearance="outline" class="full-width auth-field">
-      <mat-label>Mot de passe</mat-label>
       <input matInput type="password" formControlName="password" />
-      <mat-error *ngIf="registerForm.get('password')?.hasError('minlength')">
-        Au moins 6 caractères
+      <mat-error *ngIf="registerForm.get('password')?.hasError('passwordInvalid')">
+        Au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.
       </mat-error>
     </mat-form-field>
 

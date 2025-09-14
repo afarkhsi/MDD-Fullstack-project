@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
 import { Topic } from 'src/app/interfaces/topic.interface';
 import { ArticleService } from 'src/app/services/article/article.service';
 import { TopicService } from 'src/app/services/topics/topics.service';
@@ -13,6 +14,8 @@ import { TopicService } from 'src/app/services/topics/topics.service';
 export class CreateArticleComponent implements OnInit {
   articleForm!: FormGroup;
   topics: Topic[] = [];
+
+  private destroy$ = new Subject<void>();
 
   constructor(
     private fb: FormBuilder,
@@ -28,16 +31,29 @@ export class CreateArticleComponent implements OnInit {
       topicId: [null, Validators.required]
     });
 
-    this.topicService.getAllTopics().subscribe(data => this.topics = data);
+    this.topicService.getAllTopics()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(data => this.topics = data);
   }
 
   onSubmit(): void {
     if (this.articleForm.invalid) return;
-    this.articleService.createArticle(this.articleForm.value).subscribe({
-      next: () => console.log('Article créé'),
-      error: err => console.error('Erreur création', err)
-    });
-    this.router.navigate(['/articles']);
+
+    this.articleService.createArticle(this.articleForm.value)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          console.log('Article créé');
+          // Naviguer seulement après succès
+          this.router.navigate(['/articles']);
+        },
+        error: err => console.error('Erreur création', err)
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
 

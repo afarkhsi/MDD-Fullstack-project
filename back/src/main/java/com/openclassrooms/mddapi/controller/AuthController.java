@@ -1,6 +1,9 @@
 package com.openclassrooms.mddapi.controller;
 
+import java.security.Principal;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -11,16 +14,20 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.openclassrooms.mddapi.exception.ApiExceptions;
 import com.openclassrooms.mddapi.model.User;
 import com.openclassrooms.mddapi.payload.request.SignInRequest;
 import com.openclassrooms.mddapi.payload.request.SignupRequest;
 import com.openclassrooms.mddapi.payload.response.JwtResponse;
 import com.openclassrooms.mddapi.payload.response.MessageResponse;
+import com.openclassrooms.mddapi.payload.response.TopicResponse;
+import com.openclassrooms.mddapi.payload.response.UserResponse;
 import com.openclassrooms.mddapi.service.UserService;
 import com.openclassrooms.mddapi.security.jwt.JwtUtils;
 import com.openclassrooms.mddapi.security.service.UserDetailsImpl;
@@ -69,15 +76,11 @@ public class AuthController {
 	public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
 
 	    if (userService.isUsernameExist(signUpRequest.getUsername())) {
-	        return ResponseEntity
-	                .badRequest()
-	                .body(new MessageResponse("Error: Username is already taken!"));
+	       throw new ApiExceptions.BadRequestException("Error: Username is already taken!");
 	    }
 
 	    if (userService.isEmailExist(signUpRequest.getEmail())) {
-	        return ResponseEntity
-	                .badRequest()
-	                .body(new MessageResponse("Error: Email is already taken!"));
+	    	throw new ApiExceptions.BadRequestException("Email déjà utilisé");
 	    }
 
 	    // 1. Création et persistance
@@ -107,17 +110,4 @@ public class AuthController {
 
 	    return ResponseEntity.ok(jwtResponse);
 	}
-	
-	 private User getUserFromIdentifier(String emailOrUsername) {
-	        Optional<User> userFromEmail = userService.getUserByEmail(emailOrUsername);
-	        Optional<User> userFromUsername = userService.getUserByUsername(emailOrUsername);
-
-	        Boolean identifierIsInvalid = userFromEmail.isEmpty() && userFromUsername.isEmpty();
-	        if (identifierIsInvalid) {
-	        	 throw new UsernameNotFoundException(
-	                     "User Not Found with username or email: " + emailOrUsername);
-	        }
-
-	        return userFromEmail.isPresent() ? userFromEmail.get() : userFromUsername.get();
-	  }
 }

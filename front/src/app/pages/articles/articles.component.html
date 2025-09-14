@@ -2,6 +2,17 @@
 <section class="articles-section">
   <div class="actions">
     <button class="btn-create" routerLink="/articles/create">Créer un article</button>
+    <button class="btn-sort" (click)="toggleSortOrder()">
+      Trier par
+      <mat-icon fontSet="material-icons-outlined">
+        {{ sortOrder === 'desc' ? 'arrow_downward' : 'arrow_upward' }}
+      </mat-icon>
+    </button>
+
+  </div>
+
+  <div *ngIf="!articles || articles.length === 0" class="no-articles">
+    Pour accéder aux articles, veuillez vous abonner à un ou plusieurs sujets dans votre rubrique&nbsp;<strong>Thèmes</strong>.
   </div>
 
   <div class="articles-grid">

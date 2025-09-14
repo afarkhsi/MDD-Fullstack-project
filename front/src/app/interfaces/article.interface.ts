@@ -14,6 +14,6 @@ export interface Article {
 }
 
 export type UserComment = {
-  username: User;
+  username: string;
   comment: string;
 };

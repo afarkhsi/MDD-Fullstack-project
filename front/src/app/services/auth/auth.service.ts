@@ -5,6 +5,7 @@ import { RegisterRequest } from 'src/app/interfaces/registerRequest.interface';
 import { SessionInformation } from 'src/app/interfaces/sessionInfo.interface';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
+import { User } from 'src/app/interfaces/user.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -42,9 +43,4 @@ export class AuthService {
     this.authStatus.next(false);
     this.router.navigate(['/home']);
   }
-
-  getToken(): string | null {
-    return localStorage.getItem('token');
-  }
-
 }

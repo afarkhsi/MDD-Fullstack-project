@@ -1,12 +1,12 @@
-<div class="card">
-  <h3 class="title">{{ article.title }}</h3>
+<div class="card card-article" [routerLink]="['/articles', article.id]">
+  <h3 class="card_title">{{ article.title }}</h3>
 
-  <div class="meta">
-    <span *ngIf="article.createdAt">{{ article.createdAt }}</span>
+  <div class="card_meta">
+    <span *ngIf="article.createdAt">{{ article.createdAt | date:'dd MMM yyyy' }}</span>
     <span *ngIf="article.authorUsername">{{ article.authorUsername.name }}</span>
   </div>
 
-  <p class="content">
+  <p class="card_content card-article_content">
     {{ article.description }}
   </p>
 </div>

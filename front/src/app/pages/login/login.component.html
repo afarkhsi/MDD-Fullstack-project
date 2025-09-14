@@ -1,21 +1,26 @@
 <div class="auth-container">
-   <button mat-icon-button routerLink="/"  class="back-arrow">
-    <mat-icon>arrow_back</mat-icon>
-  </button>
+
+  <div class="home_image-container masqued-on-desktop">
+    <img src="/assets/logo_p6.png" alt="home logo">
+  </div>
 
   <h2 class="auth-title">Se connecter</h2>
 
   <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="auth-form">
+
+    <button mat-icon-button routerLink="/"  class="back-arrow">
+      <mat-icon fontSet="material-icons-outlined">arrow_back</mat-icon>
+    </button>
+    <mat-label>E-mail ou nom d’utilisateur</mat-label>
     <mat-form-field appearance="outline"class="full-width auth-field">
-      <mat-label>E-mail ou nom d’utilisateur</mat-label>
       <input matInput formControlName="emailOrUsername" />
       <mat-error *ngIf="loginForm.get('emailOrUsername')?.hasError('required')">
         Ce champ est requis
       </mat-error>
     </mat-form-field>
 
+    <mat-label>Mot de passe</mat-label>
     <mat-form-field appearance="outline" class="full-width auth-field">
-      <mat-label>Mot de passe</mat-label>
       <input matInput type="password" formControlName="password" />
       <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
         Le mot de passe est requis
