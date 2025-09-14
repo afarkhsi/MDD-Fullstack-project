@@ -35,17 +35,4 @@ public class TopicController {
 	    }
         return ResponseEntity.ok(topics);
     }
-    
-    /**
-     * Retrieve a topic by ID
-     */
-    @GetMapping("/{id}")
-    @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<TopicResponse> getTopicById(@PathVariable Long id, Principal principal) {
-    	TopicResponse topic = topicService.getById(id, principal.getName());
-    	if (topic == null) {
-            throw new ApiExceptions.ResourceNotFoundException("Thème introuvable");
-        }
-        return ResponseEntity.ok(topic);
-    }
 }

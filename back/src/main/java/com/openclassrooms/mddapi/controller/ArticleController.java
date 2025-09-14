@@ -53,11 +53,6 @@ public class ArticleController {
         return ResponseEntity.ok(new MessageResponse("Article créé avec succès"));
     }
     
-    @GetMapping
-    @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<List<ArticleResponse>> getAllArticles() {
-        return ResponseEntity.ok(articleService.getAll());
-    }
     
     @GetMapping("/{id}")
     @PreAuthorize("isAuthenticated()")

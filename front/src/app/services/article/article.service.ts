@@ -18,10 +18,6 @@ export class ArticleService {
     return this.httpClient.post(`${this.articleUrl}`, article);
   }
 
-  getAllArticles(): Observable<ArticleResponse[]> {
-    return this.httpClient.get<ArticleResponse[]>(`${this.articleUrl}`);
-  }
-
   getArticleById(id: number): Observable<Article> {
   return this.httpClient.get<Article>(`${this.articleUrl}/${id}`);  
   }
